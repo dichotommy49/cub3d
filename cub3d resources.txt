@@ -7,5 +7,13 @@ https://github.com/id-Software/wolf3d
 mlx install instructions:
 https://achedeuzot.me/2014/12/20/installer-la-minilibx/
 
-Comprehensive raycasting tutorial:
+Lode's comprehensive raycasting tutorial:
 https://lodev.org/cgtutor/raycasting.html
+
+Permadi's comprehensive raycasting tutorial (1996):
+https://permadi.com/1996/05/ray-casting-tutorial-1/
+
+Youtube videos:
+  Explaining 2d line intersection math: https://www.youtube.com/watch?v=c065KoXooSw
+  Breaking down Wolf3d's map renderer: https://www.youtube.com/watch?v=eOCQfxRQ2pY
+  
