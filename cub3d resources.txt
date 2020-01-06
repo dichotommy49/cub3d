@@ -7,7 +7,7 @@ https://github.com/keuhdall/wolf3d/tree/master/textures
 Wolf3d Source:
 https://github.com/id-Software/wolf3d
 
-mlx install instructions:
+mlx install instructions (outdated--more useful for links to mlx man pages):
 https://achedeuzot.me/2014/12/20/installer-la-minilibx/
 
 Lode's comprehensive raycasting tutorial:
