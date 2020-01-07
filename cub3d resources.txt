@@ -1,28 +1,49 @@
-Super basic raycasting tutorial + engine: 
-https://www.playfuljs.com/a-first-person-engine-in-265-lines/
+Raycasting resources:
+{
+  Super basic raycasting tutorial + engine: 
+  https://www.playfuljs.com/a-first-person-engine-in-265-lines/
 
-Wolf3d Textures:
-https://github.com/keuhdall/wolf3d/tree/master/textures
+  Wolf3d Textures:
+  https://github.com/keuhdall/wolf3d/tree/master/textures
 
-Wolf3d Source:
-https://github.com/id-Software/wolf3d
+  Wolf3d Source:
+  https://github.com/id-Software/wolf3d
 
-mlx install instructions (outdated--more useful for links to mlx man pages):
-https://achedeuzot.me/2014/12/20/installer-la-minilibx/
+  mlx install instructions (outdated--more useful for links to mlx man pages):
+  https://achedeuzot.me/2014/12/20/installer-la-minilibx/
 
-Lode's comprehensive raycasting tutorial:
-https://lodev.org/cgtutor/raycasting.html
+  Lode's comprehensive raycasting tutorial:
+  https://lodev.org/cgtutor/raycasting.html
 
-Permadi's comprehensive raycasting tutorial (1996):
-https://permadi.com/1996/05/ray-casting-tutorial-1/
+  Permadi's comprehensive raycasting tutorial (1996):
+  https://permadi.com/1996/05/ray-casting-tutorial-1/
 
-Mark Seminatore's C++ raycasting engine (1995):
-https://www.drdobbs.com/cpp/a-ray-casting-engine-in-c/184409586
+  Mark Seminatore's C++ raycasting engine (1995):
+  https://www.drdobbs.com/cpp/a-ray-casting-engine-in-c/184409586
 
-Basic ray-casting tutorial (using event-driven programming):
-https://cheukyin699.github.io/tutorial/2017/05/10/basic-raycasting-tut.html
+  Basic ray-casting tutorial (using event-driven programming):
+  https://cheukyin699.github.io/tutorial/2017/05/10/basic-raycasting-tut.html
 
-Youtube videos:
-  Explaining 2d line intersection math: https://www.youtube.com/watch?v=c065KoXooSw
-  Breaking down Wolf3d's map renderer: https://www.youtube.com/watch?v=eOCQfxRQ2pY
+  Youtube videos:
+    Explaining 2d line intersection math: https://www.youtube.com/watch?v=c065KoXooSw
+    Breaking down Wolf3d's map renderer: https://www.youtube.com/watch?v=eOCQfxRQ2pY
+} 
+
+Project resources:
+{
+  mlx man:
+  http://files.achedeuzot.me/42/mlx/man/mlx.pdf
+  http://files.achedeuzot.me/42/mlx/man/mlx_loop.pdf
+  http://files.achedeuzot.me/42/mlx/man/mlx_new_image.pdf
+  http://files.achedeuzot.me/42/mlx/man/mlx_new_window.pdf
+  http://files.achedeuzot.me/42/mlx/man/mlx_pixel_put.pdf
   
+  excellent mlx guide:
+  https://harm-smits.github.io/42docs/libs/minilibx
+  
+  mlx tips with many great links to other resources:
+  https://github.com/qst0/ft_libgfx
+  
+  full list of all applescript keycodes:
+  https://eastmanreference.com/complete-list-of-applescript-key-codes
+}
