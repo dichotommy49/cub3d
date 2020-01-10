@@ -9,9 +9,6 @@ Raycasting resources:
   Wolf3d Source:
   https://github.com/id-Software/wolf3d
 
-  mlx install instructions (outdated--more useful for links to mlx man pages):
-  https://achedeuzot.me/2014/12/20/installer-la-minilibx/
-
   Lode's comprehensive raycasting tutorial:
   https://lodev.org/cgtutor/raycasting.html
 
@@ -41,9 +38,12 @@ Project resources:
   excellent mlx guide:
   https://harm-smits.github.io/42docs/libs/minilibx
   
-  mlx tips with many great links to other resources:
+  mlx tips with many links to other resources:
   https://github.com/qst0/ft_libgfx
   
   full list of all applescript keycodes:
   https://eastmanreference.com/complete-list-of-applescript-key-codes
+  
+  mlx install instructions (outdated--do not follow these, just useful for educational purposes):
+  https://achedeuzot.me/2014/12/20/installer-la-minilibx/
 }
