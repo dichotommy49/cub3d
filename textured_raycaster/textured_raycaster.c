@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 11:20:47 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/20 13:21:39 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/20 13:26:29 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	var_init(param_t *p)
 	p->screen1.addr = mlx_get_data_addr(p->screen1.img, &p->screen1.bpp, &p->screen1.line_length, &p->screen1.endian);
 	p->screen2.img = mlx_new_image(p->mlx_ptr, RES_W, RES_H);
 	p->screen2.addr = mlx_get_data_addr(p->screen2.img, &p->screen2.bpp, &p->screen2.line_length, &p->screen2.endian);
+	p->background_color = 0;
 
 	//generate textures
 	int x = 0;
@@ -180,7 +181,16 @@ void	draw_screen(param_t *p)
 		double	step = 1.0 * TEX_H / line_height;
 		//starting texture coordinate
 		double	tex_pos = (draw_start - RES_H / 2 + line_height / 2) * step;
-		y = draw_start;
+		//start drawing screen
+		y = 0;
+		while (y < draw_start)
+		{
+			if (p->current_screen == 1)
+				my_mlx_pixel_put(p->screen2, x, y, p->background_color);
+			else
+				my_mlx_pixel_put(p->screen1, x, y, p->background_color);
+			y++;
+		}
 		while (y < draw_end)
 		{
 			//cast the texture coordinate to integer
@@ -194,6 +204,14 @@ void	draw_screen(param_t *p)
 				my_mlx_pixel_put(p->screen2, x, y, color);
 			else
 				my_mlx_pixel_put(p->screen1, x, y, color);
+			y++;
+		}
+		while (y < RES_H)
+		{
+			if (p->current_screen == 1)
+				my_mlx_pixel_put(p->screen2, x, y, p->background_color);
+			else
+				my_mlx_pixel_put(p->screen1, x, y, p->background_color);
 			y++;
 		}
 	}

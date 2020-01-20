@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 11:16:49 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/15 15:49:00 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/20 13:25:37 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct	param_s
 	img_t		screen2;
 	int			current_screen;
 	int			texture[8][TEX_W * TEX_H];
+	int			background_color;
 //	struct timespec	old_time;
 //	struct timespec	time;
 }				param_t;
