@@ -13,6 +13,9 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
 # include <time.h>
@@ -35,6 +38,21 @@ typedef struct	s_player
 	double		rot_speed;
 }				t_player;
 
+typedef struct	s_map
+{
+	char		*cub_path;
+	char		*cub_content;
+	int			res_w;
+	int			res_h;
+	char		*north_tex_path;
+	char		*south_tex_path;
+	char		*east_tex_path;
+	char		*west_tex_path;
+	char		*sprite_path;
+	int			floor_color;
+	int			ceiling_color;
+}				t_map;
+
 typedef struct	s_param
 {
 	void		*mlx_ptr;
@@ -46,6 +64,7 @@ typedef struct	s_param
 	t_img		screen2;
 	int			current_screen;
 	int			texture[8][TEX_W * TEX_H];
+	t_map		map_info;
 	int			floor_color;
 	int			ceiling_color;
 //	struct timespec	old_time;
@@ -57,10 +76,25 @@ typedef struct	s_raycast
 
 }				t_raycast;
 
+/*
+**	hooks
+*/
+
 int				key_press_hook(int keycode, t_param *p);
 int				key_release_hook(int keycode, t_param *p);
 int				loop_hook(t_param *p);
+
+/*
+**	raycasting
+*/
+
 void			var_init(t_param *p);
 void			draw_screen(t_param *p);
+
+/*
+**	map processing
+*/
+
+int				parse_cub(t_map *map_info);
 
 #endif
