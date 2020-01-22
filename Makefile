@@ -2,7 +2,7 @@ NAME := cub3d
 SRCDIR := ./
 MLXDIR := ./mlx/
 MLX := libmlx.a
-SRC := main raycast vector img hooks
+SRC := main raycast vector img hooks parse
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra
 CFILES := $(addsuffix .c, $(SRC))
@@ -15,7 +15,7 @@ $(NAME) : $(OBJECTS)
 	cp $(MLXDIR)$(MLX) $(SRCDIR)
 	$(CC) $(CFLAGS) -L. -lmlx -framework OpenGL -framework AppKit $(OBJECTS) -o $(NAME)
 run :
-	$(SRCDIR)$(NAME)
+	$(SRCDIR)$(NAME) ./maps/testmap1.cub
 
 clean : 
 	rm -f $(OBJECTS)

@@ -1,0 +1,15 @@
+R 1920 1080
+NO ./textures/redbrick.png
+SO ./textures/purplestone.png
+WE ./textures/mossy.png
+EA ./textures/wood.png
+
+S ./textures/barrel.png
+F 220,100,0
+C 225,30,0
+
+111111
+100101
+102001
+1100N1
+111111
