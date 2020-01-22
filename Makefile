@@ -15,7 +15,7 @@ $(NAME) : $(OBJECTS)
 	cp $(MLXDIR)$(MLX) $(SRCDIR)
 	$(CC) $(CFLAGS) -L. -lmlx -framework OpenGL -framework AppKit $(OBJECTS) -o $(NAME)
 run :
-	$(SRCDIR)$(NAME)
+	$(SRCDIR)$(NAME) ./maps/testmap1.cub
 
 clean : 
 	rm -f $(OBJECTS)

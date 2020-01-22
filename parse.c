@@ -5,6 +5,11 @@ static int	is_digit(char c)
 	return (c >= '0' && c<= '9');	
 }
 
+static int	is_alpha(char c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
 static int	ft_atoi(char **str)
 {
 	int	r;
@@ -25,6 +30,21 @@ static int	ft_atoi(char **str)
 		*str = *str + 1;
 	}
 	return (r * sign);
+}
+
+static unsigned int	ft_atoui(char **str)
+{
+	unsigned int	r;
+
+	r = 0;
+	while (**str == ' ')
+		*str = *str + 1;
+	while (is_digit(**str))
+	{
+		r = r * 10 + **str - 48;
+		*str = *str + 1;
+	}
+	return (r);
 }
 
 static int	ft_strlen(char *s)
@@ -75,65 +95,32 @@ void	get_resolution(char **cub, t_map *map_info)
 void	get_texture_path(char **cub, t_map *map_info, char c)
 {
 	int		i;
+	char	**target;
 
 	i = 0;
-	*cub = *cub + 1;
-	if (c == 'S')
+	while(is_alpha(**cub))
 		*cub = *cub + 1;
 	while (**cub == ' ')
 		*cub = *cub + 1;
 	if (c == 'N')
-	{
-		while (*(cub)[i] != ' ' && *(cub)[i] != '\n')
-			i++;
-		if (!(map_info->north_tex_path = malloc(i + 1)))
-			return ;
-		i = 0;
-		while (**cub != ' ' && **cub != '\n')
-		{
-			map_info->north_tex_path[i++] = **cub;
-			*cub = *cub + 1;
-		}
-	}
+		target = &map_info->north_tex_path;
 	else if (c == 'W')
-	{
-		while (*(cub)[i] != ' ' && *(cub)[i] != '\n')
-			i++;
-		if (!(map_info->west_tex_path = malloc(i + 1)))
-			return ;
-		i = 0;
-		while (**cub != ' ' && **cub != '\n')
-		{
-			map_info->west_tex_path[i++] = **cub;
-			*cub = *cub + 1;
-		}
-	}
+		target = &map_info->west_tex_path;
 	else if (c == 'E')
+		target = &map_info->east_tex_path;
+	else if (c == 'S')
+		target = &map_info->south_tex_path;
+	while ((*cub)[i] != ' ' && (*cub)[i] != '\n')
+		i++;
+	if (!(*target = malloc(i + 1)))
+		return ;
+	i = 0;
+	while (**cub != ' ' && **cub != '\n')
 	{
-		while (*(cub)[i] != ' ' && *(cub)[i] != '\n')
-			i++;
-		if (!(map_info->east_tex_path = malloc(i + 1)))
-			return ;
-		i = 0;
-		while (**cub != ' ' && **cub != '\n')
-		{
-			map_info->east_tex_path[i++] = **cub;
-			*cub = *cub + 1;
-		}
+		(*target)[i++] = **cub;
+		*cub = *cub + 1;
 	}
-	else
-	{
-		while (*(cub)[i] != ' ' && *(cub)[i] != '\n')
-			i++;
-		if (!(map_info->south_tex_path = malloc(i + 1)))
-			return ;
-		i = 0;
-		while (**cub != ' ' && **cub != '\n')
-		{
-			map_info->south_tex_path[i++] = **cub;
-			*cub = *cub + 1;
-		}
-	}
+	(*target)[i] = 0;
 }
 
 void	get_sprite_path(char **cub, t_map *map_info)
@@ -144,7 +131,7 @@ void	get_sprite_path(char **cub, t_map *map_info)
 	*cub = *cub + 1;
 	while (**cub == ' ')
 		*cub = *cub + 1;
-	while (*(cub)[i] != ' ' && *(cub)[i] != '\n')
+	while ((*cub)[i] != ' ' && (*cub)[i] != '\n')
 		i++;
 	if (!(map_info->sprite_path = malloc(i + 1)))
 		return ;
@@ -154,25 +141,60 @@ void	get_sprite_path(char **cub, t_map *map_info)
 		map_info->sprite_path[i++] = **cub;
 		*cub = *cub + 1;
 	}
+	map_info->sprite_path[i] = 0;
 }
 
-void	get_color(char **cub, t_map *map_info, int location)
+void	get_color(char **cub, t_map *map_info, int ceiling)
 {
 	int		r;
 	int		g;
 	int		b;
+	unsigned int	color;
 	
 	*cub = *cub + 1;
-	r = ft_atoi(cub);
+	r = ft_atoui(cub);
 	*cub = *cub + 1;
-	g = ft_atoi(cub);
+	g = ft_atoui(cub);
 	*cub = *cub + 1;
-	b = ft_atoi(cub);
+	b = ft_atoui(cub);
 	*cub = *cub + 1;
-	if (location == 0)
-		map_info->floor_color = (b << 24 | g << 16 | r << 8);
-	else if (location == 1)
-		map_info->ceiling_color = (b << 24 | g << 16 | r << 8);
+	color = (r << 16 | g << 8 | b);
+	if (!ceiling)
+		map_info->floor_color = color;
+	else
+		map_info->ceiling_color = color;
+}
+
+int		get_map_width(char *cub)
+{
+	int	i;
+	
+	i = 0;
+	while (cub[i] && cub[i] != '\n')
+	{
+		i++;
+	}
+	return (i);
+}
+
+int		get_map_height(char *cub)
+{
+	int	i;
+
+	i = 0;
+	while (*cub)
+	{
+		if (!is_digit(*cub))
+			break ;
+		while (*cub && (is_digit(*cub) || *cub == 'N' || *cub == 'S' || *cub == 'E' || *cub == 'W'))
+			cub++;
+		if (*cub == '\n')
+		{
+			i++;
+			cub++;
+		}
+	}
+	return (i);
 }
 
 int		read_cub(t_map *map_info)
@@ -199,6 +221,7 @@ int		read_cub(t_map *map_info)
 int		parse_cub(t_map *map_info)
 {
 	char	*cub;
+	int		i;
 	
 	if (read_cub(map_info) < 0)
 		return (-1);
@@ -209,17 +232,26 @@ int		parse_cub(t_map *map_info)
 			cub++;
 		if (*cub == 'R')
 			get_resolution(&cub, map_info);
-		else if (*cub == 'N' || *cub == 'W' || *cub == 'E' || (*cub == 'S' && *(cub + 1) == 'O'))
+		if (*cub == 'N' || *cub == 'W' || *cub == 'E' || (*cub == 'S' && *(cub + 1) == 'O'))
 			get_texture_path(&cub, map_info, *cub);
-		else if (*cub == 'S')
+		if (*cub == 'S')
 			get_sprite_path(&cub, map_info);
-		else if (*cub == 'F')
+		if (*cub == 'F')
 			get_color(&cub, map_info, 0);
-		else if (*cub == 'C')
+		if (*cub == 'C')
 			get_color(&cub, map_info, 1);
-		cub++;
+		if (*cub == '1' && *(cub - 1) == '\n')
+			break ;
 	}
+	map_info->map_w = get_map_width(cub);
+	map_info->map_h = get_map_height(cub);
+	map_info->level_map = malloc(sizeof(int *) * map_info->map_w);
+	i = 0;
+	while (i < map_info->map_w)
+		map_info->level_map[i++] = malloc(sizeof(int) * map_info->map_h);
 	free(map_info->cub_content);
 	map_info->cub_content = NULL;
+	free(map_info->cub_path);
+	map_info->cub_path = NULL;
 	return (0);
 }

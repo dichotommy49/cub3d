@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/20 15:30:40 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/22 14:42:15 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,27 @@ typedef struct	s_player
 
 typedef struct	s_map
 {
-	char		*cub_path;
-	char		*cub_content;
-	int			res_w;
-	int			res_h;
-	char		*north_tex_path;
-	char		*south_tex_path;
-	char		*east_tex_path;
-	char		*west_tex_path;
-	char		*sprite_path;
-	int			floor_color;
-	int			ceiling_color;
+	char			*cub_path;
+	char			*cub_content;
+	int				res_w;
+	int				res_h;
+	char			*north_tex_path;
+	char			*south_tex_path;
+	char			*east_tex_path;
+	char			*west_tex_path;
+	char			*sprite_path;
+	unsigned int	floor_color;
+	unsigned int	ceiling_color;
+	int				map_w;
+	int				map_h;
+	int				**level_map;
 }				t_map;
 
 typedef struct	s_param
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
-	int			world_map[RES_W][RES_H];
+	int			world_map[MAP_W][MAP_H];
 	t_player	player;
 	t_vector	cam_plane;
 	t_img		screen1;
