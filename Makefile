@@ -1,28 +1,36 @@
 NAME := cub3d
-SRCDIR := ./
+SRCDIR := ./srcs/
 MLXDIR := ./mlx/
 MLX := libmlx.a
-SRC := main raycast vector img hooks parse
+LIBFTDIR := ./libft/
+LIBFT := libft.a
+SRC := main raycast vector img hooks parse tools
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra
-CFILES := $(addsuffix .c, $(SRC))
-OBJECTS := $(addsuffix .o, $(SRC))
+CFILES := $(addprefix $(SRCDIR), $(addsuffix .c, $(SRC)))
+OBJECTS := $(addprefix $(SRCDIR), $(addsuffix .o, $(SRC)))
 
 all : $(NAME)
 
+%.c : %.o
+
+
 $(NAME) : $(OBJECTS)
 	$(MAKE) -C $(MLXDIR) all
-	cp $(MLXDIR)$(MLX) $(SRCDIR)
-	$(CC) $(CFLAGS) -L. -lmlx -framework OpenGL -framework AppKit $(OBJECTS) -o $(NAME)
+	$(MAKE) -C $(LIBFTDIR) all
+	mv $(MLXDIR)$(MLX) ./
+	mv $(LIBFTDIR)$(LIBFT) ./
+	$(CC) $(CFLAGS) -L. -lmlx -lft -framework OpenGL -framework AppKit $(OBJECTS) -o $(NAME)
 run :
-	$(SRCDIR)$(NAME) ./maps/testmap1.cub
+	./$(NAME) ./maps/testmap1.cub
 
 clean : 
 	rm -f $(OBJECTS)
 	$(MAKE) -C $(MLXDIR) clean
+	$(MAKE) -C $(LIBFTDIR) clean
 
 fclean : clean
-	rm -f $(NAME) $(MLX)
+	rm -f $(NAME) $(MLX) $(LIBFT)
 
 re: fclean all
 
