@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:07:37 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/27 16:30:55 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 19:10:27 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,30 @@ int				key_press_hook(int keycode, t_param *p)
 {
 	if (keycode == 13)
 	{
-		if (!p->world_map[(int)(p->player.pos.x + p->player.dir.x * p->player.move_speed)][(int)p->player.pos.y])
+		if (!p->map_info.level_map[(int)(p->player.pos.x + p->player.dir.x * p->player.move_speed)][(int)p->player.pos.y])
 			p->player.pos.x += p->player.dir.x * p->player.move_speed;
-		if (!p->world_map[(int)p->player.pos.x][(int)(p->player.pos.y + p->player.dir.y * p->player.move_speed)])
+		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y + p->player.dir.y * p->player.move_speed)])
 			p->player.pos.y += p->player.dir.y * p->player.move_speed;
 	}
 	if (keycode == 1)
 	{
-		if (!p->world_map[(int)(p->player.pos.x - p->player.dir.x * p->player.move_speed)][(int)p->player.pos.y])
+		if (!p->map_info.level_map[(int)(p->player.pos.x - p->player.dir.x * p->player.move_speed)][(int)p->player.pos.y])
 			p->player.pos.x -= p->player.dir.x * p->player.move_speed;
-		if (!p->world_map[(int)p->player.pos.x][(int)(p->player.pos.y - p->player.dir.y * p->player.move_speed)])
+		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y - p->player.dir.y * p->player.move_speed)])
 			p->player.pos.y -= p->player.dir.y * p->player.move_speed;
 	}
 	if (keycode == 0)
 	{
-		if (!p->world_map[(int)(p->player.pos.x - p->cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
+		if (!p->map_info.level_map[(int)(p->player.pos.x - p->cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
 			p->player.pos.x -= p->cam_plane.x * p->player.move_speed;
-		if (!p->world_map[(int)p->player.pos.x][(int)(p->player.pos.y - p->cam_plane.y * p->player.move_speed)])
+		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y - p->cam_plane.y * p->player.move_speed)])
 			p->player.pos.y -= p->cam_plane.y * p->player.move_speed;
 	}
 	if (keycode == 2)
 	{
-		if (!p->world_map[(int)(p->player.pos.x + p->cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
+		if (!p->map_info.level_map[(int)(p->player.pos.x + p->cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
 			p->player.pos.x += p->cam_plane.x * p->player.move_speed;
-		if (!p->world_map[(int)p->player.pos.x][(int)(p->player.pos.y + p->cam_plane.y * p->player.move_speed)])
+		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y + p->cam_plane.y * p->player.move_speed)])
 			p->player.pos.y += p->cam_plane.y * p->player.move_speed;
 	}
 	if (keycode == 123)

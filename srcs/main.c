@@ -6,23 +6,23 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/22 15:42:59 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 19:08:34 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void			init_map_info(t_map *map_info)
+void			init_map_info(t_param *p)
 {
-	map_info->north_tex_path = 0;
-	map_info->south_tex_path = 0;
-	map_info->east_tex_path = 0;
-	map_info->west_tex_path = 0;
-	map_info->sprite_path = 0;
-	map_info->res_w = -1;
-	map_info->res_h = -1;
-	map_info->floor_color = 0;
-	map_info->ceiling_color = 0;
+	p->map_info.north_tex_path = 0;
+	p->map_info.south_tex_path = 0;
+	p->map_info.east_tex_path = 0;
+	p->map_info.west_tex_path = 0;
+	p->map_info.sprite_path = 0;
+	p->map_info.floor_color = 0;
+	p->map_info.ceiling_color = 0;
+	p->res_w = -1;
+	p->res_h = -1;
 }
 
 int				main(int argc, char **argv)
@@ -30,22 +30,20 @@ int				main(int argc, char **argv)
 	t_param		p;
 	int			save_bmp;
 
-	if (argc == 3)
+	if (argc == 3 && ft_strcmp(argv[2], "--save") == 0)
 	{
-		if (ft_strcmp(argv[2], "--save") != 0)
-			return (1);
 		save_bmp = 1;
 	}
-	if (argc == 2 || argc == 3)
+	if (argc >= 2)
 	{
-		init_map_info(&p.map_info);
+		init_map_info(&p);
 		if (!(p.map_info.cub_path = ft_strdup(argv[1])))
 			return (1);
-		parse_cub(&p.map_info);
+		parse_cub(&p);
 	}
 	if (!(p.mlx_ptr = mlx_init()))
 		return (1);
-	if (!(p.win_ptr = mlx_new_window(p.mlx_ptr, RES_W, RES_H, "cub3d")))
+	if (!(p.win_ptr = mlx_new_window(p.mlx_ptr, p.res_w, p.res_h, "cub3d")))
 		return (1);
 	var_init(&p);
 	mlx_hook(p.win_ptr, 2, (1L<<0), key_press_hook, &p);

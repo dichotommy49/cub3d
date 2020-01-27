@@ -6,17 +6,17 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/27 15:27:34 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 19:07:08 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	get_resolution(char **cub, t_map *map_info)
+void	get_resolution(char **cub, t_param *p)
 {
 	*cub = *cub + 1;
-	map_info->res_w = cub3d_atoi(cub);
-	map_info->res_h = cub3d_atoi(cub);	
+	p->res_w = cub3d_atoi(cub);
+	p->res_h = cub3d_atoi(cub);	
 }
 
 void	get_texture_path(char **cub, t_map *map_info, char c)
@@ -145,11 +145,54 @@ int		read_cub(t_map *map_info)
 	return (0);
 }
 
-int		parse_cub(t_map *map_info)
+void	zero_level_map(t_map *map_info)
+{
+	int x;
+	int y;
+	
+	x = 0;
+	y = 0;
+	while (x < map_info->map_w)
+	{
+		y = 0;
+		while (y < map_info->map_h)
+		{
+			map_info->level_map[x][y] = 0;
+			y++;
+		}
+		x++;
+	}
+}
+
+void	print_level_map(t_map *map_info)
+{
+	int x;
+	int y;
+	
+	printf("map_w: %d\nmap_h: %d\n", map_info->map_w, map_info->map_h);
+	x = 0;
+	y = 0;
+	while (x < map_info->map_w)
+	{
+		y = 0;
+		while (y < map_info->map_h)
+		{
+			printf("%d", map_info->level_map[x][y]);
+			y++;
+		}
+		printf("\n");
+		x++;
+	}
+}
+
+int		parse_cub(t_param *p)
 {
 	char	*cub;
-	int		i;
-	
+	int		x;
+	int		y;
+	t_map 	*map_info;
+
+	map_info = &p->map_info;
 	if (read_cub(map_info) < 0)
 		return (-1);
 	cub = map_info->cub_content;
@@ -158,7 +201,7 @@ int		parse_cub(t_map *map_info)
 		while (*cub == ' ' || *cub == '\n')
 			cub++;
 		if (*cub == 'R')
-			get_resolution(&cub, map_info);
+			get_resolution(&cub, p);
 		if (*cub == 'N' || *cub == 'W' || *cub == 'E' || (*cub == 'S' && *(cub + 1) == 'O'))
 			get_texture_path(&cub, map_info, *cub);
 		if (*cub == 'S')
@@ -167,15 +210,63 @@ int		parse_cub(t_map *map_info)
 			get_color(&cub, map_info, 0);
 		if (*cub == 'C')
 			get_color(&cub, map_info, 1);
-		if (*cub == '1' && *(cub - 1) == '\n')
+		if (ft_isdigit(*cub) && *(cub - 1) == '\n')
 			break ;
 	}
 	map_info->map_w = get_map_width(cub);
 	map_info->map_h = get_map_height(cub);
 	map_info->level_map = malloc(sizeof(int *) * map_info->map_w);
-	i = 0;
-	while (i < map_info->map_w)
-		map_info->level_map[i++] = malloc(sizeof(int) * map_info->map_h);
+	x = 0;
+	while (x < map_info->map_w)
+		map_info->level_map[x++] = malloc(sizeof(int) * map_info->map_h);
+	zero_level_map(map_info);
+	x = 0;
+	y = 0;
+	while (y < map_info->map_h)
+	{
+		x = 0;
+		while (x < map_info->map_w)
+		{
+			if (*cub == '\n')
+			{
+				cub++;
+			}
+			else
+			{
+				if (*cub == 'N' || *cub == 'S' || *cub == 'W' || *cub == 'E')
+				{
+					p->player.pos.x = x; 
+					p->player.pos.y = y + 0.5;
+					if (*cub == 'N')
+					{
+						p->player.dir.x = -1;
+						p->player.dir.y = 0;
+					}
+					else if (*cub == 'S')
+					{
+						p->player.dir.x = 1;
+						p->player.dir.y = 0;
+					}
+					else if (*cub == 'W')
+					{
+						p->player.dir.x = 0;
+						p->player.dir.y = -1;
+					}
+					else if (*cub == 'E')
+					{
+						p->player.dir.x = 0;
+						p->player.dir.y = 1;
+					}
+					map_info->level_map[x][y] = 0;
+				}
+				else
+					map_info->level_map[x][y] = *cub - '0';
+				cub++;
+				x++;
+			}
+		}
+		y++;
+	}
 	free(map_info->cub_content);
 	map_info->cub_content = NULL;
 	free(map_info->cub_path);

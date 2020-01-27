@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/27 15:25:04 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 19:32:16 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,8 @@
 # include "../mlx/mlx.h"
 # include "../libft/libft.h"
 
-# define RES_W 1280
-# define RES_H 1024
-# define TEX_W 64
-# define TEX_H 64
-# define MAP_W 24
-# define MAP_H 24
+# define TEX_W 1024
+# define TEX_H 1024
 
 typedef struct	s_player
 {
@@ -43,8 +39,6 @@ typedef struct	s_map
 {
 	char			*cub_path;
 	char			*cub_content;
-	int				res_w;
-	int				res_h;
 	char			*north_tex_path;
 	char			*south_tex_path;
 	char			*east_tex_path;
@@ -63,7 +57,8 @@ typedef struct	s_param
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
-	int			world_map[MAP_W][MAP_H];
+	int			res_w;
+	int			res_h;
 	t_player	player;
 	t_vector	cam_plane;
 	t_img		screen1;
@@ -71,8 +66,6 @@ typedef struct	s_param
 	int			current_screen;
 	t_img		texture[8];
 	t_map		map_info;
-	int			floor_color;
-	int			ceiling_color;
 //	struct timespec	old_time;
 //	struct timespec	time;
 }				t_param;
@@ -101,7 +94,7 @@ void			draw_screen(t_param *p);
 **	map processing
 */
 
-int				parse_cub(t_map *map_info);
+int				parse_cub(t_param *p);
 
 /*
 **	tools (mostly for map processing)
