@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/22 15:43:04 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 15:27:34 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,5 +180,7 @@ int		parse_cub(t_map *map_info)
 	map_info->cub_content = NULL;
 	free(map_info->cub_path);
 	map_info->cub_path = NULL;
+	map_info->tex_w = TEX_W;
+	map_info->tex_h = TEX_H;
 	return (0);
 }

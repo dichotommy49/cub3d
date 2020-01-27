@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/22 15:34:34 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 15:25:04 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct	s_map
 	int				map_w;
 	int				map_h;
 	int				**level_map;
+	int				tex_w;
+	int				tex_h;
 }				t_map;
 
 typedef struct	s_param
@@ -67,7 +69,7 @@ typedef struct	s_param
 	t_img		screen1;
 	t_img		screen2;
 	int			current_screen;
-	int			texture[8][TEX_W * TEX_H];
+	t_img		texture[8];
 	t_map		map_info;
 	int			floor_color;
 	int			ceiling_color;

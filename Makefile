@@ -6,7 +6,7 @@ LIBFTDIR := ./libft/
 LIBFT := libft.a
 SRC := main raycast vector img hooks parse tools
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra
+CFLAGS := -Wall -Werror -Wextra 
 CFILES := $(addprefix $(SRCDIR), $(addsuffix .c, $(SRC)))
 OBJECTS := $(addprefix $(SRCDIR), $(addsuffix .o, $(SRC)))
 

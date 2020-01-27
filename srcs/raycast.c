@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:01:52 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/22 15:43:09 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 15:40:03 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,27 @@ void	var_init(t_param *p)
 	p->floor_color = 0xffffff;
 	p->ceiling_color = 0x000000;
 
-	//generate textures
+	//set textures
+	p->texture[0].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.north_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[1].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.south_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[2].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.east_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[3].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.west_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[4].img = mlx_xpm_file_to_image(p->mlx_ptr, "./textures/xpm/bluestone.xpm", &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[5].img = mlx_xpm_file_to_image(p->mlx_ptr, "./textures/xpm/greystone.xpm", &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[6].img = mlx_xpm_file_to_image(p->mlx_ptr, "./textures/xpm/colorstone.xpm", &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[7].img = mlx_xpm_file_to_image(p->mlx_ptr, "./textures/xpm/eagle.xpm", &p->map_info.tex_w, &p->map_info.tex_h);
+	
+	p->texture[0].addr = mlx_get_data_addr(p->texture[0].img, &p->texture[0].bpp, &p->texture[0].line_length, &p->texture[0].endian);
+	p->texture[1].addr = mlx_get_data_addr(p->texture[1].img, &p->texture[1].bpp, &p->texture[1].line_length, &p->texture[1].endian);
+	p->texture[2].addr = mlx_get_data_addr(p->texture[2].img, &p->texture[2].bpp, &p->texture[2].line_length, &p->texture[2].endian);
+	p->texture[3].addr = mlx_get_data_addr(p->texture[3].img, &p->texture[3].bpp, &p->texture[3].line_length, &p->texture[3].endian);
+	p->texture[4].addr = mlx_get_data_addr(p->texture[4].img, &p->texture[4].bpp, &p->texture[4].line_length, &p->texture[4].endian);
+	p->texture[5].addr = mlx_get_data_addr(p->texture[5].img, &p->texture[5].bpp, &p->texture[5].line_length, &p->texture[5].endian);
+	p->texture[6].addr = mlx_get_data_addr(p->texture[6].img, &p->texture[6].bpp, &p->texture[6].line_length, &p->texture[6].endian);
+	p->texture[7].addr = mlx_get_data_addr(p->texture[7].img, &p->texture[7].bpp, &p->texture[7].line_length, &p->texture[7].endian);
+	//initialize map
 	int x = 0;
 	int y;
-	while (x < TEX_W)
-	{
-		y = 0;
-		while (y < TEX_H)
-		{
-			int	xorcolor = (x * 256 / TEX_W) ^ (y * 256 / TEX_H);
-			//int xcolor = x * 256 / TEX_W;
-			int	ycolor = y * 256 / TEX_H;
-			int	xycolor = y * 128 / TEX_H + x * 128 / TEX_W;
-			p->texture[0][TEX_W * y + x] = 65536 * 254 * (x != y && x != TEX_W - y);
-			p->texture[1][TEX_W * y + x] = xycolor + 256 * xycolor + 65536 * xycolor;
-			p->texture[2][TEX_W * y + x] = 256 * xycolor + 65536 * xycolor;
-			p->texture[3][TEX_W * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor;
-			p->texture[4][TEX_W * y + x] = 256 * xorcolor;
-			p->texture[5][TEX_W * y + x] = 65536 * 192 * (x % 16 && y % 16);
-			p->texture[6][TEX_W * y + x] = 65536 * ycolor;
-			p->texture[7][TEX_W * y + x] = 128 + 256 * 128 + 65536 * 128;
-			y++;
-		}
-		x++;
-	}
-	x = 0;
 	while (x < MAP_W)
 	{
 		y = 0;
@@ -197,7 +193,7 @@ void	draw_screen(t_param *p)
 			//cast the texture coordinate to integer
 			int	tex_y = (int)tex_pos & (TEX_H - 1);
 			tex_pos += step;
-			int	color = p->texture[tex_num][TEX_H * tex_y + tex_x];
+			unsigned int color = my_mlx_pixel_get(p->texture[tex_num], tex_x, tex_y);
 			//make color darker for y-sides: R, G, and B byte each divided through two with a bitshift and bitwise and
 			if (side == 1)
 				color = (color >> 1) & 8355711;

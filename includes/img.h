@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 15:42:00 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/20 15:17:59 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/27 15:29:22 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_img
 	int         endian;
 }               t_img;
 
-void	my_mlx_pixel_put(t_img img, int x, int y, int color);
+void			my_mlx_pixel_put(t_img img, int x, int y, int color);
+unsigned int	my_mlx_pixel_get(t_img img, int x, int y);
 
 #endif

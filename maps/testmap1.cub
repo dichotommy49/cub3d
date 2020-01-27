@@ -1,8 +1,8 @@
 R 1920 1080
-NO ./textures/redbrick.png
-SO ./textures/purplestone.png
-WE ./textures/mossy.png
-EA ./textures/wood.png
+NO ./textures/xpm/redbrick.xpm
+SO ./textures/xpm/purplestone.xpm
+WE ./textures/xpm/mossy.xpm
+EA ./textures/xpm/wood.xpm
 
 S ./textures/barrel.png
 F 220,100,0
