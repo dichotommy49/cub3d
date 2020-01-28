@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:07:37 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/27 19:10:27 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/28 17:57:26 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int				key_press_hook(int keycode, t_param *p)
 		p->cam_plane.x = p->cam_plane.x * cos(-p->player.rot_speed) - p->cam_plane.y * sin(-p->player.rot_speed);
 		p->cam_plane.y = old_plane_x * sin(-p->player.rot_speed) + p->cam_plane.y * cos(-p->player.rot_speed);
 	}
-	if (keycode == 36)
-		printf("x: %f\n y: %f\n", p->player.dir.x, p->player.dir.y);
+	if (keycode == 53)
+		exit_cub3d(p);
 	return (0);
 }
 

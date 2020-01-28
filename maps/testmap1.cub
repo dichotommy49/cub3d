@@ -1,4 +1,4 @@
-R 1920 1080
+R 1024 768
 NO ./textures/xpm/redbrick.xpm
 SO ./textures/xpm/purplestone.xpm
 WE ./textures/xpm/mossy.xpm

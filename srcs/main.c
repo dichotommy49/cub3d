@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/27 19:08:34 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/28 17:56:30 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ void			init_map_info(t_param *p)
 	p->map_info.ceiling_color = 0;
 	p->res_w = -1;
 	p->res_h = -1;
+}
+
+int				exit_cub3d(t_param *p)
+{
+	if (p->mlx_ptr && p->win_ptr)
+	{
+		mlx_clear_window(p->mlx_ptr, p->win_ptr);
+		mlx_destroy_window(p->mlx_ptr, p->win_ptr);
+	}
+	printf("Cub3d terminated successfully.");
+	exit(0);
+	return (0);
 }
 
 int				main(int argc, char **argv)
@@ -48,6 +60,7 @@ int				main(int argc, char **argv)
 	var_init(&p);
 	mlx_hook(p.win_ptr, 2, (1L<<0), key_press_hook, &p);
 	mlx_hook(p.win_ptr, 3, (1L<<1), key_release_hook, &p);
+	mlx_hook(p.win_ptr, 17, 0L, exit_cub3d, &p);
 	mlx_loop_hook(p.mlx_ptr, loop_hook, &p);
 	mlx_loop(p.mlx_ptr);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/27 19:32:16 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/28 17:50:55 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "../mlx/mlx.h"
 # include "../libft/libft.h"
 
-# define TEX_W 1024
-# define TEX_H 1024
+# define TEX_W 64
+# define TEX_H 64
 
 typedef struct	s_player
 {
@@ -64,7 +64,7 @@ typedef struct	s_param
 	t_img		screen1;
 	t_img		screen2;
 	int			current_screen;
-	t_img		texture[8];
+	t_img		texture[4];
 	t_map		map_info;
 //	struct timespec	old_time;
 //	struct timespec	time;
@@ -103,5 +103,6 @@ int				parse_cub(t_param *p);
 int				cub3d_atoi(char **str);
 unsigned int	cub3d_atoui(char **str);
 char			*cub3d_strjoin(char *s1, char *s2);
+int				exit_cub3d(t_param *p);
 
 #endif

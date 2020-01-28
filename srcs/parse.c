@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/27 19:07:08 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/28 17:07:25 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,10 +222,10 @@ int		parse_cub(t_param *p)
 	zero_level_map(map_info);
 	x = 0;
 	y = 0;
-	while (y < map_info->map_h)
+	while (y <= map_info->map_h)
 	{
-		x = 0;
-		while (x < map_info->map_w)
+		x = map_info->map_w - 1;
+		while (x >= 0)
 		{
 			if (*cub == '\n')
 			{
@@ -235,38 +235,39 @@ int		parse_cub(t_param *p)
 			{
 				if (*cub == 'N' || *cub == 'S' || *cub == 'W' || *cub == 'E')
 				{
-					p->player.pos.x = x; 
+					p->player.pos.x = x + 0.5; 
 					p->player.pos.y = y + 0.5;
 					if (*cub == 'N')
-					{
-						p->player.dir.x = -1;
-						p->player.dir.y = 0;
-					}
-					else if (*cub == 'S')
-					{
-						p->player.dir.x = 1;
-						p->player.dir.y = 0;
-					}
-					else if (*cub == 'W')
 					{
 						p->player.dir.x = 0;
 						p->player.dir.y = -1;
 					}
-					else if (*cub == 'E')
+					else if (*cub == 'S')
 					{
 						p->player.dir.x = 0;
 						p->player.dir.y = 1;
+					}
+					else if (*cub == 'W')
+					{
+						p->player.dir.x = 1;
+						p->player.dir.y = 0;
+					}
+					else if (*cub == 'E')
+					{
+						p->player.dir.x = -1;
+						p->player.dir.y = 0;
 					}
 					map_info->level_map[x][y] = 0;
 				}
 				else
 					map_info->level_map[x][y] = *cub - '0';
 				cub++;
-				x++;
+				x--;
 			}
 		}
 		y++;
 	}
+	print_level_map(map_info);
 	free(map_info->cub_content);
 	map_info->cub_content = NULL;
 	free(map_info->cub_path);
