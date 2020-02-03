@@ -4,7 +4,7 @@ MLXDIR := ./mlx/
 MLX := libmlx.a
 LIBFTDIR := ./libft/
 LIBFT := libft.a
-SRC := main raycast vector img hooks parse tools
+SRC := main raycast vector img hooks parse tools core
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra 
 CFILES := $(addprefix $(SRCDIR), $(addsuffix .c, $(SRC)))
@@ -22,7 +22,7 @@ $(NAME) : $(OBJECTS)
 	mv $(LIBFTDIR)$(LIBFT) ./
 	$(CC) $(CFLAGS) -L. -lmlx -lft -framework OpenGL -framework AppKit $(OBJECTS) -o $(NAME)
 run :
-	./$(NAME) ./maps/testmap1.cub
+	./$(NAME) ./maps/subject_map.cub
 
 clean : 
 	rm -f $(OBJECTS)

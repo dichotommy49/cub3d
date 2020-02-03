@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:01:52 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/28 17:31:00 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/03 10:50:58 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	var_init(t_param *p)
 		p->cam_plane.x = -0.66, p->cam_plane.y = 0;
 	else if (p->player.dir.y == 1)
 		p->cam_plane.x = 0.66, p->cam_plane.y = 0;
+	if (!(p->zbuffer = malloc(sizeof(double) * p->res_w)))
+		return ;
 //	clock_gettime(CLOCK_REALTIME, &p->time);
 	p->current_screen = 1;
 	p->screen1.img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
@@ -34,16 +36,87 @@ void	var_init(t_param *p)
 	p->texture[1].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.south_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
 	p->texture[2].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.east_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
 	p->texture[3].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.west_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
+	p->texture[4].img = mlx_xpm_file_to_image(p->mlx_ptr, p->map_info.sprite_path, &p->map_info.tex_w, &p->map_info.tex_h);
 	
 	p->texture[0].addr = mlx_get_data_addr(p->texture[0].img, &p->texture[0].bpp, &p->texture[0].line_length, &p->texture[0].endian);
 	p->texture[1].addr = mlx_get_data_addr(p->texture[1].img, &p->texture[1].bpp, &p->texture[1].line_length, &p->texture[1].endian);
 	p->texture[2].addr = mlx_get_data_addr(p->texture[2].img, &p->texture[2].bpp, &p->texture[2].line_length, &p->texture[2].endian);
 	p->texture[3].addr = mlx_get_data_addr(p->texture[3].img, &p->texture[3].bpp, &p->texture[3].line_length, &p->texture[3].endian);
+	p->texture[4].addr = mlx_get_data_addr(p->texture[4].img, &p->texture[4].bpp, &p->texture[4].line_length, &p->texture[4].endian);
+
 	p->player.move_speed = 0.5;
 	p->player.rot_speed = 0.1;
 }
 
-void	draw_screen(t_param *p)
+void	draw_sprites(t_param *p)
+{
+	int		i;
+
+//	i = 0;
+//	while (	i < NUM_SPRITES)
+//	{
+//		sprite_order[i] = i;
+//		sprite_distance[i] = ((p->player.pos.x - sprites[i].x) * (p->player.pos.x - sprites[i].x) + (p->player.pos.y - sprites[i].y) * (p->player.pos.y - sprites[i].y));
+//		i++;
+//	}
+
+	i = 0;
+	while (i < p->num_sprites)
+	{
+		double	sprite_x = p->sprites[i].x - p->player.pos.x;
+		double	sprite_y = p->sprites[i].y - p->player.pos.y;
+		double	inv_det = 1.0 / (p->cam_plane.x * p->player.dir.y - p->player.dir.x * p->cam_plane.y);
+		double	transform_x = inv_det * (p->player.dir.y * sprite_x - p->player.dir.x * sprite_y);
+		double	transform_y = inv_det * (-p->cam_plane.y * sprite_x + p->cam_plane.x * sprite_y);
+		int		sprite_screen_x = (int)((p->res_w / 2) * (1 + transform_x / transform_y));
+
+		//calculate the height of the sprite on screen
+		int		sprite_height = abs((int)(p->res_h / transform_y));
+		//calculate lowest and highest pixel to fill in current stripe
+		int		draw_start_y = -sprite_height / 2 + p->res_h / 2;
+		if (draw_start_y < 0)
+			draw_start_y = 0;
+		int		draw_end_y = sprite_height / 2 + p->res_h / 2;
+		if (draw_end_y >= p->res_h)
+			draw_end_y = p->res_h - 1;
+
+		//calculate width of the sprite
+		int	sprite_width = abs((int)(p->res_h / transform_y));
+		int	draw_start_x = -sprite_width / 2 + sprite_screen_x;
+		if (draw_start_x < 0)
+			draw_start_x = 0;
+		int	draw_end_x = sprite_width / 2 + sprite_screen_x;
+		if (draw_end_x >= p->res_w)
+			draw_end_x = p->res_w - 1;
+
+		//loop through every vertical stripe of the sprite on screen
+		int	stripe = draw_start_x;
+		while (stripe < draw_end_x)
+		{
+			int tex_x = ((int)(256 * (stripe - (-sprite_width / 2 + sprite_screen_x)) * p->map_info.tex_w / sprite_width)) / 256;
+			if (transform_y > 0 && stripe > 0 && stripe < p->res_w && transform_y < p->zbuffer[stripe])
+			{
+				int y = draw_start_y;
+				while (y < draw_end_y)
+				{
+					int d = (y) * 256 - p->res_h * 128 + sprite_height * 128;
+					int tex_y = ((d * p->map_info.tex_h) / sprite_height) / 256;
+					unsigned int color = my_mlx_pixel_get(p->texture[4], tex_x, tex_y);
+					if ((color & 0x00FFFFFF) != 0)
+					{
+						my_mlx_pixel_put(p, stripe, y, color);
+					}
+					y++;
+				}
+			}
+			stripe++;
+		}
+		i++;
+	}
+
+}
+
+void	draw_world(t_param *p)
 {
 	int y;
 	int x = -1;
@@ -145,10 +218,7 @@ void	draw_screen(t_param *p)
 		y = 0;
 		while (y < draw_start)
 		{
-			if (p->current_screen == 1)
-				my_mlx_pixel_put(p->screen2, x, y, p->map_info.ceiling_color);
-			else
-				my_mlx_pixel_put(p->screen1, x, y, p->map_info.ceiling_color);
+			my_mlx_pixel_put(p, x, y, p->map_info.ceiling_color);
 			y++;
 		}
 		while (y < draw_end)
@@ -159,36 +229,14 @@ void	draw_screen(t_param *p)
 			unsigned int color = my_mlx_pixel_get(p->texture[tex_num], tex_x, tex_y);
 			if (side == 1)
 				color = (color >> 1) & 8355711;
-			if (p->current_screen == 1)
-				my_mlx_pixel_put(p->screen2, x, y, color);
-			else
-				my_mlx_pixel_put(p->screen1, x, y, color);
+			my_mlx_pixel_put(p, x, y, color);
 			y++;
 		}
 		while (y < p->res_h)
 		{
-			if (p->current_screen == 1)
-				my_mlx_pixel_put(p->screen2, x, y, p->map_info.floor_color);
-			else
-				my_mlx_pixel_put(p->screen1, x, y, p->map_info.floor_color);
+			my_mlx_pixel_put(p, x, y, p->map_info.floor_color);
 			y++;
 		}
+		p->zbuffer[x] = perp_wall_dist;
 	}
-	if (p->current_screen == 1)
-	{
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->screen2.img, 0, 0);
-		p->current_screen = 2;
-	}
-	else
-	{
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->screen1.img, 0, 0);
-		p->current_screen = 1;
-	}
-//	p->old_time = p->time;
-//	clock_gettime(CLOCK_REALTIME, &p->time);
-//	double	frame_time = (p->time.tv_sec - p->old_time.tv_sec) + (p->time.tv_nsec - p->old_time.tv_nsec)/1000000000;
-//	frame_time = frame_time / 1000.0;
-//	printf("%f\n", 1.0 / frame_time);
-//	p->player.move_speed = frame_time * 5.0;
-//	p->player.rot_speed = frame_time * 3.0;
 }

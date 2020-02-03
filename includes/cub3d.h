@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/28 17:50:55 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/03 10:55:43 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,27 @@
 # include <math.h>
 # include <time.h>
 # include "vector.h"
-# include "img.h"
 # include "../mlx/mlx.h"
 # include "../libft/libft.h"
 
 # define TEX_W 64
 # define TEX_H 64
+
+typedef struct	s_sprite
+{
+	double		x;
+	double		y;
+	int			texture;
+}				t_sprite;
+
+typedef struct s_img
+{
+	void        *img;
+	char        *addr;
+	int         bpp;
+	int         line_length;
+	int         endian;
+}               t_img;
 
 typedef struct	s_player
 {
@@ -34,6 +49,19 @@ typedef struct	s_player
 	double		move_speed;
 	double		rot_speed;
 }				t_player;
+
+typedef struct	s_keys
+{
+	int			up_arrow;
+	int			down_arrow;
+	int			left_arrow;
+	int			right_arrow;
+	int			w;
+	int			a;
+	int			s;
+	int			d;
+	int			space;
+}				t_keys;
 
 typedef struct	s_map
 {
@@ -64,16 +92,28 @@ typedef struct	s_param
 	t_img		screen1;
 	t_img		screen2;
 	int			current_screen;
-	t_img		texture[4];
+	t_img		texture[5];
 	t_map		map_info;
+	t_keys		keys;
+	double		*zbuffer;
+	int			num_sprites;
+	t_sprite	*sprites;
 //	struct timespec	old_time;
 //	struct timespec	time;
+	
 }				t_param;
 
 typedef struct	s_raycast
 {
 
 }				t_raycast;
+
+/*
+**	core functions
+*/
+
+void			update(t_param *p);
+void			draw(t_param *p);
 
 /*
 **	hooks
@@ -84,10 +124,11 @@ int				key_release_hook(int keycode, t_param *p);
 int				loop_hook(t_param *p);
 
 /*
-**	raycasting
+**	drawing
 */
 
-void			var_init(t_param *p);
+void			draw_world(t_param *p);
+void			draw_sprites(t_param *p);
 void			draw_screen(t_param *p);
 
 /*
@@ -104,5 +145,11 @@ int				cub3d_atoi(char **str);
 unsigned int	cub3d_atoui(char **str);
 char			*cub3d_strjoin(char *s1, char *s2);
 int				exit_cub3d(t_param *p);
+
+void			reset_keys(t_param *p);
+void			var_init(t_param *p);
+
+void			my_mlx_pixel_put(t_param *p, int x, int y, int color);
+unsigned int	my_mlx_pixel_get(t_img img, int x, int y);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/28 17:56:30 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/01/30 17:54:02 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void			init_map_info(t_param *p)
 	p->map_info.ceiling_color = 0;
 	p->res_w = -1;
 	p->res_h = -1;
+	reset_keys(p);
 }
 
 int				exit_cub3d(t_param *p)

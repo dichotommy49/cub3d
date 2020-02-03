@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/28 17:07:25 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/03 10:35:15 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,8 @@ int		parse_cub(t_param *p)
 	zero_level_map(map_info);
 	x = 0;
 	y = 0;
-	while (y <= map_info->map_h)
+	p->num_sprites = 0;
+	while (y < map_info->map_h)
 	{
 		x = map_info->map_w - 1;
 		while (x >= 0)
@@ -257,17 +258,41 @@ int		parse_cub(t_param *p)
 						p->player.dir.x = -1;
 						p->player.dir.y = 0;
 					}
-					map_info->level_map[x][y] = 0;
+					*cub = '0';
 				}
-				else
-					map_info->level_map[x][y] = *cub - '0';
+				else if (*cub == '2')
+				{
+					p->num_sprites++;
+				}
+				map_info->level_map[x][y] = *cub - '0';
 				cub++;
 				x--;
 			}
 		}
 		y++;
 	}
-	print_level_map(map_info);
+	//allocate sprite array and get sprite positions
+	if (!(p->sprites = malloc(sizeof(t_sprite) * p->num_sprites)))
+		return (-1);
+	x = 0;
+	int	i = 0;
+	while (x < map_info->map_w)
+	{
+		y = 0;
+		while (y < map_info->map_h)
+		{
+			if (map_info->level_map[x][y] == 2)
+			{
+				p->sprites[i].x = x + 0.5;
+				p->sprites[i].y = y + 0.5;
+				p->sprites[i].texture = 4;
+				i++;
+			}
+			y++;
+		}
+		x++;
+	}
+//	print_level_map(map_info);
 	free(map_info->cub_content);
 	map_info->cub_content = NULL;
 	free(map_info->cub_path);
