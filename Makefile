@@ -22,7 +22,7 @@ $(NAME) : $(OBJECTS)
 	mv $(LIBFTDIR)$(LIBFT) ./
 	$(CC) $(CFLAGS) -L. -lmlx -lft -framework OpenGL -framework AppKit $(OBJECTS) -o $(NAME)
 run :
-	./$(NAME) ./maps/subject_map.cub
+	./$(NAME) ./maps/testmap1.cub
 
 clean : 
 	rm -f $(OBJECTS)

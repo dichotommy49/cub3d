@@ -48,23 +48,53 @@ void	var_init(t_param *p)
 	p->player.rot_speed = 0.1;
 }
 
+void	sort_sprites(int *order, double *distance, t_param *p)
+{
+	int	i;
+	int	j;
+	int		swap_int;
+	double	swap_double;
+
+	i = 0;
+	while (i < p->num_sprites - 1)
+	{
+		j = 0;
+		while (j < p->num_sprites - i - 1)
+		{
+			if (distance[j] < distance[j + 1])
+			{
+				swap_int = order[j];
+				swap_double = distance[j];
+				order[j] = order[j + 1];
+				distance[j] = distance[j + 1];
+				order[j + 1] = swap_int;
+				distance[j + 1] = swap_double;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 void	draw_sprites(t_param *p)
 {
 	int		i;
+	int		sprite_order[p->num_sprites];
+	double	sprite_distance[p->num_sprites];
 
-//	i = 0;
-//	while (	i < NUM_SPRITES)
-//	{
-//		sprite_order[i] = i;
-//		sprite_distance[i] = ((p->player.pos.x - sprites[i].x) * (p->player.pos.x - sprites[i].x) + (p->player.pos.y - sprites[i].y) * (p->player.pos.y - sprites[i].y));
-//		i++;
-//	}
-
+	i = 0;
+	while (	i < p->num_sprites)
+	{
+		sprite_order[i] = i;
+		sprite_distance[i] = ((p->player.pos.x - p->sprites[i].x) * (p->player.pos.x - p->sprites[i].x) + (p->player.pos.y - p->sprites[i].y) * (p->player.pos.y - p->sprites[i].y));
+		i++;
+	}
+	sort_sprites(sprite_order, sprite_distance, p);
 	i = 0;
 	while (i < p->num_sprites)
 	{
-		double	sprite_x = p->sprites[i].x - p->player.pos.x;
-		double	sprite_y = p->sprites[i].y - p->player.pos.y;
+		double	sprite_x = p->sprites[sprite_order[i]].x - p->player.pos.x;
+		double	sprite_y = p->sprites[sprite_order[i]].y - p->player.pos.y;
 		double	inv_det = 1.0 / (p->cam_plane.x * p->player.dir.y - p->player.dir.x * p->cam_plane.y);
 		double	transform_x = inv_det * (p->player.dir.y * sprite_x - p->player.dir.x * sprite_y);
 		double	transform_y = inv_det * (-p->cam_plane.y * sprite_x + p->cam_plane.x * sprite_y);
