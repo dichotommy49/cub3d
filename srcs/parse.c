@@ -77,7 +77,7 @@ void	get_color(char **cub, t_map *map_info, int ceiling)
 	int		g;
 	int		b;
 	unsigned int	color;
-	
+
 	*cub = *cub + 1;
 	r = cub3d_atoui(cub);
 	*cub = *cub + 1;
@@ -95,7 +95,7 @@ void	get_color(char **cub, t_map *map_info, int ceiling)
 int		get_map_width(char *cub)
 {
 	int	i;
-	
+
 	i = 0;
 	while (cub[i] && cub[i] != '\n')
 	{
@@ -130,10 +130,10 @@ int		read_cub(t_map *map_info)
 	int		r;
 	char	buf[32];
 	char	*cub;
-	
+
 	if ((fd = open(map_info->cub_path, O_RDONLY)) < 0)
 		return (-1);
-	if (!(cub = malloc(1)) || (cub[0] = 0))
+	if (!(cub = ft_strdup("")))
 		return (-1);
 	while ((r = read(fd, buf, 31)) > 0)
 	{
@@ -149,7 +149,7 @@ void	zero_level_map(t_map *map_info)
 {
 	int x;
 	int y;
-	
+
 	x = 0;
 	y = 0;
 	while (x < map_info->map_w)
@@ -168,7 +168,7 @@ void	print_level_map(t_map *map_info)
 {
 	int x;
 	int y;
-	
+
 	printf("map_w: %d\nmap_h: %d\n", map_info->map_w, map_info->map_h);
 	x = 0;
 	y = 0;
@@ -182,6 +182,38 @@ void	print_level_map(t_map *map_info)
 		}
 		printf("\n");
 		x++;
+	}
+}
+
+void	set_player_starting_direction(t_param *p, char c)
+{
+	if (c == 'N')
+	{
+		p->player.dir.x = 0;
+		p->player.dir.y = -1;
+		p->cam_plane.x = -0.66;
+		p->cam_plane.y = 0;
+	}
+	else if (c == 'S')
+	{
+		p->player.dir.x = 0;
+		p->player.dir.y = 1;
+		p->cam_plane.x = 0.66;
+		p->cam_plane.y = 0;
+	}
+	else if (c == 'W')
+	{
+		p->player.dir.x = 1;
+		p->player.dir.y = 0;
+		p->cam_plane.x = 0.0;
+		p->cam_plane.y = -0.66;
+	}
+	else if (c == 'E')
+	{
+		p->player.dir.x = -1;
+		p->player.dir.y = 0;
+		p->cam_plane.x = 0.0;
+		p->cam_plane.y = 0.66;
 	}
 }
 
@@ -238,26 +270,7 @@ int		parse_cub(t_param *p)
 				{
 					p->player.pos.x = x + 0.5; 
 					p->player.pos.y = y + 0.5;
-					if (*cub == 'N')
-					{
-						p->player.dir.x = 0;
-						p->player.dir.y = -1;
-					}
-					else if (*cub == 'S')
-					{
-						p->player.dir.x = 0;
-						p->player.dir.y = 1;
-					}
-					else if (*cub == 'W')
-					{
-						p->player.dir.x = 1;
-						p->player.dir.y = 0;
-					}
-					else if (*cub == 'E')
-					{
-						p->player.dir.x = -1;
-						p->player.dir.y = 0;
-					}
+					set_player_starting_direction(p, *cub);
 					*cub = '0';
 				}
 				else if (*cub == '2')
@@ -292,7 +305,7 @@ int		parse_cub(t_param *p)
 		}
 		x++;
 	}
-//	print_level_map(map_info);
+	//	print_level_map(map_info);
 	free(map_info->cub_content);
 	map_info->cub_content = NULL;
 	free(map_info->cub_path);
