@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:07:37 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/03 10:41:51 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/10 10:37:35 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,30 @@ int				key_press_hook(int keycode, t_param *p)
 
 int				key_release_hook(int keycode, t_param *p)
 {
-	(void)keycode;
-	(void)p;
+	if (keycode == 13)
+	{
+		p->keys.w = 0;
+	}
+	if (keycode == 1)
+	{
+		p->keys.s = 0;
+	}
+	if (keycode == 0)
+	{
+		p->keys.a = 0;
+	}
+	if (keycode == 2)
+	{
+		p->keys.d = 0;
+	}
+	if (keycode == 123)
+	{
+		p->keys.left_arrow = 0;
+	}
+	if (keycode == 124)
+	{
+		p->keys.right_arrow = 0;
+	}
 	return (0);
 }
 

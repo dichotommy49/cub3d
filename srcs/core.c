@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 15:55:42 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/03 10:42:21 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/10 10:57:27 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		reset_keys(t_param *p)
 	p->keys.space = 0;
 }
 
-void		update_player(t_param *p)
+void		move_forward_back(t_param *p)
 {
 	if (p->keys.w)
 	{
@@ -41,6 +41,10 @@ void		update_player(t_param *p)
 		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y - p->player.dir.y * p->player.move_speed)])
 			p->player.pos.y -= p->player.dir.y * p->player.move_speed;
 	}
+}
+
+void		move_strafe(t_param *p)
+{
 	if (p->keys.a)
 	{
 		if (!p->map_info.level_map[(int)(p->player.pos.x - p->cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
@@ -55,6 +59,10 @@ void		update_player(t_param *p)
 		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y + p->cam_plane.y * p->player.move_speed)])
 			p->player.pos.y += p->cam_plane.y * p->player.move_speed;
 	}
+}
+
+void		look_left_right(t_param *p)
+{
 	if (p->keys.left_arrow)
 	{
 		double old_dir_x = p->player.dir.x;
@@ -75,6 +83,13 @@ void		update_player(t_param *p)
 	}
 }
 
+void		update_player(t_param *p)
+{
+	move_forward_back(p);
+	move_strafe(p);
+	look_left_right(p);
+}
+
 void		draw_screen(t_param *p)
 {
 	if (p->current_screen == 1)
@@ -92,7 +107,6 @@ void		draw_screen(t_param *p)
 void		update(t_param *p)
 {
 	update_player(p);
-	reset_keys(p);
 }
 
 void		draw(t_param *p)

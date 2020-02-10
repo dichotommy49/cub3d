@@ -6,11 +6,31 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/30 17:54:02 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/10 12:48:01 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+void	init_game(t_param *p)
+{
+	if (!(p->zbuffer = malloc(sizeof(double) * p->res_w)))
+		return ;
+//	clock_gettime(CLOCK_REALTIME, &p->time);
+	p->current_screen = 1;
+	p->screen1.img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
+	p->screen1.addr = mlx_get_data_addr(p->screen1.img, &p->screen1.bpp,
+			&p->screen1.line_length, &p->screen1.endian);
+	p->screen2.img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
+	p->screen2.addr = mlx_get_data_addr(p->screen2.img, &p->screen2.bpp,
+			&p->screen2.line_length, &p->screen2.endian);
+
+	//set textures
+	init_textures(p);
+
+	p->player.move_speed = 0.1;
+	p->player.rot_speed = 0.05;
+}
 
 void			init_map_info(t_param *p)
 {
@@ -58,7 +78,7 @@ int				main(int argc, char **argv)
 		return (1);
 	if (!(p.win_ptr = mlx_new_window(p.mlx_ptr, p.res_w, p.res_h, "cub3d")))
 		return (1);
-	var_init(&p);
+	init_game(&p);
 	mlx_hook(p.win_ptr, 2, (1L<<0), key_press_hook, &p);
 	mlx_hook(p.win_ptr, 3, (1L<<1), key_release_hook, &p);
 	mlx_hook(p.win_ptr, 17, 0L, exit_cub3d, &p);

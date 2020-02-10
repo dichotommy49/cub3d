@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/03 10:55:43 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/10 13:22:33 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,40 @@ typedef struct	s_sprite
 	double		y;
 	int			texture;
 }				t_sprite;
+
+typedef struct	s_sprite_info
+{
+	t_vector	pos;
+	t_vector	transform;
+	double		inv_det;
+	t_vector	screen;
+	int			height;
+	int			width;
+	t_vector	draw_start;
+	t_vector	draw_end;
+}				t_sprite_info;
+
+typedef struct	s_raycast_info
+{
+	t_vector	ray_dir;
+	int			map_x;
+	int			map_y;
+	t_vector	side_dist;
+	t_vector	delta_dist;
+	double		perp_wall_dist;
+	int			step_x;
+	int			step_y;
+	int			side;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			tex_num;
+	double		wall_x;
+	int			tex_x;
+	int			tex_y;
+	double		step;
+	double		tex_pos;
+}				t_raycast_info;
 
 typedef struct s_img
 {
@@ -109,6 +143,12 @@ typedef struct	s_raycast
 }				t_raycast;
 
 /*
+**	initialization
+*/
+
+void	init_textures(t_param *p);
+
+/*
 **	core functions
 */
 
@@ -147,7 +187,6 @@ char			*cub3d_strjoin(char *s1, char *s2);
 int				exit_cub3d(t_param *p);
 
 void			reset_keys(t_param *p);
-void			var_init(t_param *p);
 
 void			my_mlx_pixel_put(t_param *p, int x, int y, int color);
 unsigned int	my_mlx_pixel_get(t_img img, int x, int y);
