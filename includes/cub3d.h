@@ -147,6 +147,9 @@ typedef struct	s_raycast
 */
 
 void	init_textures(t_param *p);
+void	init_game(t_param *p);
+void	init_keys(t_param *p);
+void	init_map_info(t_param *p);
 
 /*
 **	core functions

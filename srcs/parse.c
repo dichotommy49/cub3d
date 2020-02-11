@@ -97,9 +97,15 @@ int		get_map_width(char *cub)
 	int	i;
 
 	i = 0;
-	while (cub[i] && cub[i] != '\n')
+	while (*cub && *cub != '\n')
 	{
-		i++;
+		while (*cub == ' ')
+			cub++;
+		if (ft_isdigit(*cub))
+		{
+			i++;
+			cub++;
+		}
 	}
 	return (i);
 }
@@ -111,9 +117,7 @@ int		get_map_height(char *cub)
 	i = 0;
 	while (*cub)
 	{
-		if (!ft_isdigit(*cub))
-			break ;
-		while (*cub && (ft_isdigit(*cub) || *cub == 'N' || *cub == 'S' || *cub == 'E' || *cub == 'W'))
+		while (*cub && (ft_isdigit(*cub) || *cub == 'N' || *cub == 'S' || *cub == 'E' || *cub == 'W' || *cub == ' '))
 			cub++;
 		if (*cub == '\n')
 		{
@@ -260,7 +264,7 @@ int		parse_cub(t_param *p)
 		x = map_info->map_w - 1;
 		while (x >= 0)
 		{
-			if (*cub == '\n')
+			if (*cub == '\n' || *cub == ' ')
 			{
 				cub++;
 			}
@@ -305,7 +309,7 @@ int		parse_cub(t_param *p)
 		}
 		x++;
 	}
-	//	print_level_map(map_info);
+	print_level_map(map_info);
 	free(map_info->cub_content);
 	map_info->cub_content = NULL;
 	free(map_info->cub_path);

@@ -12,19 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-void		reset_keys(t_param *p)
-{
-	p->keys.up_arrow = 0;
-	p->keys.down_arrow = 0;
-	p->keys.left_arrow = 0;
-	p->keys.right_arrow = 0;
-	p->keys.w = 0;
-	p->keys.a = 0;
-	p->keys.s = 0;
-	p->keys.d = 0;
-	p->keys.space = 0;
-}
-
 void		move_forward_back(t_param *p)
 {
 	if (p->keys.w)

@@ -12,39 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-void	init_game(t_param *p)
-{
-	if (!(p->zbuffer = malloc(sizeof(double) * p->res_w)))
-		return ;
-//	clock_gettime(CLOCK_REALTIME, &p->time);
-	p->current_screen = 1;
-	p->screen1.img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
-	p->screen1.addr = mlx_get_data_addr(p->screen1.img, &p->screen1.bpp,
-			&p->screen1.line_length, &p->screen1.endian);
-	p->screen2.img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
-	p->screen2.addr = mlx_get_data_addr(p->screen2.img, &p->screen2.bpp,
-			&p->screen2.line_length, &p->screen2.endian);
-
-	//set textures
-	init_textures(p);
-
-	p->player.move_speed = 0.1;
-	p->player.rot_speed = 0.05;
-}
-
-void			init_map_info(t_param *p)
-{
-	p->map_info.north_tex_path = 0;
-	p->map_info.south_tex_path = 0;
-	p->map_info.east_tex_path = 0;
-	p->map_info.west_tex_path = 0;
-	p->map_info.sprite_path = 0;
-	p->map_info.floor_color = 0;
-	p->map_info.ceiling_color = 0;
-	p->res_w = -1;
-	p->res_h = -1;
-	reset_keys(p);
-}
 
 int				exit_cub3d(t_param *p)
 {
@@ -52,6 +19,7 @@ int				exit_cub3d(t_param *p)
 	{
 		mlx_clear_window(p->mlx_ptr, p->win_ptr);
 		mlx_destroy_window(p->mlx_ptr, p->win_ptr);
+		p->win_ptr = NULL;
 	}
 	printf("Cub3d terminated successfully.");
 	exit(0);
