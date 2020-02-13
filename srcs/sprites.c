@@ -6,13 +6,13 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:05:05 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/10 12:42:19 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:47:35 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	sort_sprites(int *order, double *distance, t_param *p)
+void	sort_sprites(int *order, double *distance, t_cub3d *p)
 {
 	int		i;
 	int		j;
@@ -40,7 +40,7 @@ void	sort_sprites(int *order, double *distance, t_param *p)
 	}
 }
 
-void	sprite_drawing_calculations(t_param *p, t_sprite_info *sprite)
+void	sprite_drawing_calculations(t_cub3d *p, t_sprite_info *sprite)
 {
 	sprite->inv_det = 1.0 / (p->cam_plane.x * p->player.dir.y -
 			p->player.dir.x * p->cam_plane.y);
@@ -66,7 +66,7 @@ void	sprite_drawing_calculations(t_param *p, t_sprite_info *sprite)
 		sprite->draw_end.x = p->res_w - 1;
 }
 
-void	draw_vertical_stripe(t_param *p, t_sprite_info *sprite, int stripe)
+void	draw_vertical_stripe(t_cub3d *p, t_sprite_info *sprite, int stripe)
 {
 	int				y;
 	int				tex_x;
@@ -94,7 +94,7 @@ void	draw_vertical_stripe(t_param *p, t_sprite_info *sprite, int stripe)
 	}
 }
 
-void	draw_individual_sprite(t_param *p, int *sprite_order, int i)
+void	draw_individual_sprite(t_cub3d *p, int *sprite_order, int i)
 {
 	t_sprite_info	sprite;
 	int				stripe;
@@ -110,7 +110,7 @@ void	draw_individual_sprite(t_param *p, int *sprite_order, int i)
 	}
 }
 
-void	draw_sprites(t_param *p)
+void	draw_sprites(t_cub3d *p)
 {
 	int		i;
 	int		sprite_order[p->num_sprites];

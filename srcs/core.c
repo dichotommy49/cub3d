@@ -6,13 +6,13 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 15:55:42 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/10 10:57:27 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:44:28 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void		move_forward_back(t_param *p)
+void		move_forward_back(t_cub3d *p)
 {
 	if (p->keys.w)
 	{
@@ -30,7 +30,7 @@ void		move_forward_back(t_param *p)
 	}
 }
 
-void		move_strafe(t_param *p)
+void		move_strafe(t_cub3d *p)
 {
 	if (p->keys.a)
 	{
@@ -48,7 +48,7 @@ void		move_strafe(t_param *p)
 	}
 }
 
-void		look_left_right(t_param *p)
+void		look_left_right(t_cub3d *p)
 {
 	if (p->keys.left_arrow)
 	{
@@ -70,14 +70,14 @@ void		look_left_right(t_param *p)
 	}
 }
 
-void		update_player(t_param *p)
+void		update_player(t_cub3d *p)
 {
 	move_forward_back(p);
 	move_strafe(p);
 	look_left_right(p);
 }
 
-void		draw_screen(t_param *p)
+void		draw_screen(t_cub3d *p)
 {
 	if (p->current_screen == 1)
 	{
@@ -91,12 +91,12 @@ void		draw_screen(t_param *p)
 	}
 }
 
-void		update(t_param *p)
+void		update(t_cub3d *p)
 {
 	update_player(p);
 }
 
-void		draw(t_param *p)
+void		draw(t_cub3d *p)
 {
 	draw_world(p);
 	draw_sprites(p);

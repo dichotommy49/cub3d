@@ -6,13 +6,13 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:07:37 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/10 10:37:35 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:45:16 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int				key_press_hook(int keycode, t_param *p)
+int				key_press_hook(int keycode, t_cub3d *p)
 {
 	if (keycode == 13)
 	{
@@ -43,7 +43,7 @@ int				key_press_hook(int keycode, t_param *p)
 	return (0);
 }
 
-int				key_release_hook(int keycode, t_param *p)
+int				key_release_hook(int keycode, t_cub3d *p)
 {
 	if (keycode == 13)
 	{
@@ -72,7 +72,7 @@ int				key_release_hook(int keycode, t_param *p)
 	return (0);
 }
 
-int				loop_hook(t_param *p)
+int				loop_hook(t_cub3d *p)
 {
 //	p->old_time = p->time;
 //	clock_gettime(CLOCK_REALTIME, &p->time);

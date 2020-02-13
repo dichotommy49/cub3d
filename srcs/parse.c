@@ -6,17 +6,23 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/03 10:35:15 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:47:07 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	get_resolution(char **cub, t_param *p)
+void	get_resolution(char **cub, t_cub3d *p)
 {
 	*cub = *cub + 1;
 	p->res_w = cub3d_atoi(cub);
-	p->res_h = cub3d_atoi(cub);	
+	p->res_h = cub3d_atoi(cub);
+	if (p->res_w > 2560)
+		p->res_w = 2560;
+	if (p->res_h > 1440)
+		p->res_h = 1440;
+	if (p->res_w <= 0 || p->res_h <= 0)
+		exit_cub3d(p);
 }
 
 void	get_texture_path(char **cub, t_map *map_info, char c)
@@ -189,7 +195,7 @@ void	print_level_map(t_map *map_info)
 	}
 }
 
-void	set_player_starting_direction(t_param *p, char c)
+void	set_player_starting_direction(t_cub3d *p, char c)
 {
 	if (c == 'N')
 	{
@@ -221,7 +227,7 @@ void	set_player_starting_direction(t_param *p, char c)
 	}
 }
 
-int		parse_cub(t_param *p)
+int		parse_cub(t_cub3d *p)
 {
 	char	*cub;
 	int		x;

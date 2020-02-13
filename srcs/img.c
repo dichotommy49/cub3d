@@ -6,13 +6,13 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 15:39:50 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/03 10:52:27 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:45:56 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void            my_mlx_pixel_put(t_param *p, int x, int y, int color)
+void            my_mlx_pixel_put(t_cub3d *p, int x, int y, int color)
 {
 	t_img	dst_img;
 	char    *dst;

@@ -6,14 +6,14 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:01:52 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/10 13:27:37 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:47:27 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 
-void	dda(t_param *p, t_raycast_info *i)
+void	dda(t_cub3d *p, t_raycast_info *i)
 {
 	int	map_x;
 	int	map_y;
@@ -43,7 +43,7 @@ void	dda(t_param *p, t_raycast_info *i)
 		(1 - i->step_y) / 2) / i->ray_dir.y;
 }
 
-void	raycast_calculations1(t_param *p, t_raycast_info *i)
+void	raycast_calculations1(t_cub3d *p, t_raycast_info *i)
 {
 	i->delta_dist.x = fabs(1 / i->ray_dir.x);
 	i->delta_dist.y = fabs(1 / i->ray_dir.y);
@@ -71,7 +71,7 @@ void	raycast_calculations1(t_param *p, t_raycast_info *i)
 		i->tex_num = 3;
 }
 
-void	raycast_calculations2(t_param *p, t_raycast_info *i)
+void	raycast_calculations2(t_cub3d *p, t_raycast_info *i)
 {
 	if (i->side == 0)
 		i->wall_x = p->player.pos.y + i->perp_wall_dist * i->ray_dir.y;
@@ -87,7 +87,7 @@ void	raycast_calculations2(t_param *p, t_raycast_info *i)
 	i->tex_pos = (i->draw_start - p->res_h / 2 + i->line_height / 2) * i->step;
 }
 
-void	draw_ceiling_wall_floor(t_param *p, t_raycast_info *i, int x)
+void	draw_ceiling_wall_floor(t_cub3d *p, t_raycast_info *i, int x)
 {
 		int				y;
 		unsigned int	color;
@@ -116,7 +116,7 @@ void	draw_ceiling_wall_floor(t_param *p, t_raycast_info *i, int x)
 		}
 }
 
-void	draw_world(t_param *p)
+void	draw_world(t_cub3d *p)
 {
 	t_raycast_info	i;
 	int 			x;

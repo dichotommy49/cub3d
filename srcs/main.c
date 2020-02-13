@@ -6,14 +6,14 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/10 12:48:01 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:46:27 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 
-int				exit_cub3d(t_param *p)
+int				exit_cub3d(t_cub3d *p)
 {
 	if (p->mlx_ptr && p->win_ptr)
 	{
@@ -28,12 +28,11 @@ int				exit_cub3d(t_param *p)
 
 int				main(int argc, char **argv)
 {
-	t_param		p;
-	int			save_bmp;
+	t_cub3d		p;
 
 	if (argc == 3 && ft_strcmp(argv[2], "--save") == 0)
 	{
-		save_bmp = 1;
+		p.save_bmp = 1;
 	}
 	if (argc >= 2)
 	{

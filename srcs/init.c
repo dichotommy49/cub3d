@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-void	init_textures(t_param *p)
+void	init_textures(t_cub3d *p)
 {
 	p->texture[0].img = mlx_xpm_file_to_image(p->mlx_ptr,
 			p->map_info.north_tex_path, &p->map_info.tex_w, &p->map_info.tex_h);
@@ -25,7 +25,7 @@ void	init_textures(t_param *p)
 			, &p->texture[4].line_length, &p->texture[4].endian);
 }
 
-void	init_game(t_param *p)
+void	init_game(t_cub3d *p)
 {
 	if (!(p->zbuffer = malloc(sizeof(double) * p->res_w)))
 		return ;
@@ -45,7 +45,7 @@ void	init_game(t_param *p)
 	p->player.rot_speed = 0.05;
 }
 
-void		init_keys(t_param *p)
+void		init_keys(t_cub3d *p)
 {
 	p->keys.up_arrow = 0;
 	p->keys.down_arrow = 0;
@@ -58,7 +58,7 @@ void		init_keys(t_param *p)
 	p->keys.space = 0;
 }
 
-void			init_map_info(t_param *p)
+void			init_map_info(t_cub3d *p)
 {
 	p->map_info.north_tex_path = 0;
 	p->map_info.south_tex_path = 0;

@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/10 13:22:33 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:48:39 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct	s_map
 	int				tex_h;
 }				t_map;
 
-typedef struct	s_param
+typedef struct	s_cub3d
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
@@ -134,8 +134,8 @@ typedef struct	s_param
 	t_sprite	*sprites;
 //	struct timespec	old_time;
 //	struct timespec	time;
-	
-}				t_param;
+	int			save_bmp;
+}				t_cub3d;
 
 typedef struct	s_raycast
 {
@@ -146,39 +146,39 @@ typedef struct	s_raycast
 **	initialization
 */
 
-void	init_textures(t_param *p);
-void	init_game(t_param *p);
-void	init_keys(t_param *p);
-void	init_map_info(t_param *p);
+void	init_textures(t_cub3d *p);
+void	init_game(t_cub3d *p);
+void	init_keys(t_cub3d *p);
+void	init_map_info(t_cub3d *p);
 
 /*
 **	core functions
 */
 
-void			update(t_param *p);
-void			draw(t_param *p);
+void			update(t_cub3d *p);
+void			draw(t_cub3d *p);
 
 /*
 **	hooks
 */
 
-int				key_press_hook(int keycode, t_param *p);
-int				key_release_hook(int keycode, t_param *p);
-int				loop_hook(t_param *p);
+int				key_press_hook(int keycode, t_cub3d *p);
+int				key_release_hook(int keycode, t_cub3d *p);
+int				loop_hook(t_cub3d *p);
 
 /*
 **	drawing
 */
 
-void			draw_world(t_param *p);
-void			draw_sprites(t_param *p);
-void			draw_screen(t_param *p);
+void			draw_world(t_cub3d *p);
+void			draw_sprites(t_cub3d *p);
+void			draw_screen(t_cub3d *p);
 
 /*
 **	map processing
 */
 
-int				parse_cub(t_param *p);
+int				parse_cub(t_cub3d *p);
 
 /*
 **	tools (mostly for map processing)
@@ -187,11 +187,11 @@ int				parse_cub(t_param *p);
 int				cub3d_atoi(char **str);
 unsigned int	cub3d_atoui(char **str);
 char			*cub3d_strjoin(char *s1, char *s2);
-int				exit_cub3d(t_param *p);
+int				exit_cub3d(t_cub3d *p);
 
-void			reset_keys(t_param *p);
+void			reset_keys(t_cub3d *p);
 
-void			my_mlx_pixel_put(t_param *p, int x, int y, int color);
+void			my_mlx_pixel_put(t_cub3d *p, int x, int y, int color);
 unsigned int	my_mlx_pixel_get(t_img img, int x, int y);
 
 #endif
