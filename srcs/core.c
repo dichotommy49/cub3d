@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 15:55:42 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 16:44:28 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 17:44:07 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ void		move_strafe(t_cub3d *p)
 {
 	if (p->keys.a)
 	{
-		if (!p->map_info.level_map[(int)(p->player.pos.x - p->cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
-			p->player.pos.x -= p->cam_plane.x * p->player.move_speed;
-		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y - p->cam_plane.y * p->player.move_speed)])
-			p->player.pos.y -= p->cam_plane.y * p->player.move_speed;
+		if (!p->map_info.level_map[(int)(p->player.pos.x - p->player.cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
+			p->player.pos.x -= p->player.cam_plane.x * p->player.move_speed;
+		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y - p->player.cam_plane.y * p->player.move_speed)])
+			p->player.pos.y -= p->player.cam_plane.y * p->player.move_speed;
 	}
 	if (p->keys.d)
 	{
-		if (!p->map_info.level_map[(int)(p->player.pos.x + p->cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
-			p->player.pos.x += p->cam_plane.x * p->player.move_speed;
-		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y + p->cam_plane.y * p->player.move_speed)])
-			p->player.pos.y += p->cam_plane.y * p->player.move_speed;
+		if (!p->map_info.level_map[(int)(p->player.pos.x + p->player.cam_plane.x * p->player.move_speed)][(int)p->player.pos.y])
+			p->player.pos.x += p->player.cam_plane.x * p->player.move_speed;
+		if (!p->map_info.level_map[(int)p->player.pos.x][(int)(p->player.pos.y + p->player.cam_plane.y * p->player.move_speed)])
+			p->player.pos.y += p->player.cam_plane.y * p->player.move_speed;
 	}
 }
 
@@ -55,18 +55,18 @@ void		look_left_right(t_cub3d *p)
 		double old_dir_x = p->player.dir.x;
 		p->player.dir.x = p->player.dir.x * cos(p->player.rot_speed) - p->player.dir.y * sin(p->player.rot_speed);
 		p->player.dir.y = old_dir_x * sin(p->player.rot_speed) + p->player.dir.y * cos(p->player.rot_speed);
-		double old_plane_x = p->cam_plane.x;
-		p->cam_plane.x = p->cam_plane.x * cos(p->player.rot_speed) - p->cam_plane.y * sin(p->player.rot_speed);
-		p->cam_plane.y = old_plane_x * sin(p->player.rot_speed) + p->cam_plane.y * cos(p->player.rot_speed);
+		double old_plane_x = p->player.cam_plane.x;
+		p->player.cam_plane.x = p->player.cam_plane.x * cos(p->player.rot_speed) - p->player.cam_plane.y * sin(p->player.rot_speed);
+		p->player.cam_plane.y = old_plane_x * sin(p->player.rot_speed) + p->player.cam_plane.y * cos(p->player.rot_speed);
 	}
 	if (p->keys.right_arrow)
 	{
 		double old_dir_x = p->player.dir.x;
 		p->player.dir.x = p->player.dir.x * cos(-p->player.rot_speed) - p->player.dir.y * sin(-p->player.rot_speed);
 		p->player.dir.y = old_dir_x * sin(-p->player.rot_speed) + p->player.dir.y * cos(-p->player.rot_speed);
-		double old_plane_x = p->cam_plane.x;
-		p->cam_plane.x = p->cam_plane.x * cos(-p->player.rot_speed) - p->cam_plane.y * sin(-p->player.rot_speed);
-		p->cam_plane.y = old_plane_x * sin(-p->player.rot_speed) + p->cam_plane.y * cos(-p->player.rot_speed);
+		double old_plane_x = p->player.cam_plane.x;
+		p->player.cam_plane.x = p->player.cam_plane.x * cos(-p->player.rot_speed) - p->player.cam_plane.y * sin(-p->player.rot_speed);
+		p->player.cam_plane.y = old_plane_x * sin(-p->player.rot_speed) + p->player.cam_plane.y * cos(-p->player.rot_speed);
 	}
 }
 

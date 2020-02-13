@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 17:34:53 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 17:40:04 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct	s_player
 {
 	t_vector	pos;
 	t_vector	dir;
+	t_vector	cam_plane;
 	double		move_speed;
 	double		rot_speed;
 }				t_player;
@@ -122,7 +123,6 @@ typedef struct	s_cub3d
 	int			res_w;
 	int			res_h;
 	t_player	player;
-	t_vector	cam_plane;
 	t_img		screen1;
 	t_img		screen2;
 	int			current_screen;

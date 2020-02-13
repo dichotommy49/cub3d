@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:05:05 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 16:47:35 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 17:45:28 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void	sort_sprites(int *order, double *distance, t_cub3d *p)
 
 void	sprite_drawing_calculations(t_cub3d *p, t_sprite_info *sprite)
 {
-	sprite->inv_det = 1.0 / (p->cam_plane.x * p->player.dir.y -
-			p->player.dir.x * p->cam_plane.y);
+	sprite->inv_det = 1.0 / (p->player.cam_plane.x * p->player.dir.y -
+			p->player.dir.x * p->player.cam_plane.y);
 	sprite->transform.x = sprite->inv_det * (p->player.dir.y *
 			sprite->pos.x - p->player.dir.x * sprite->pos.y);
-	sprite->transform.y = sprite->inv_det * (-p->cam_plane.y *
-			sprite->pos.x + p->cam_plane.x * sprite->pos.y);
+	sprite->transform.y = sprite->inv_det * (-p->player.cam_plane.y *
+			sprite->pos.x + p->player.cam_plane.x * sprite->pos.y);
 	sprite->screen.x = (int)((p->res_w / 2) *
 			(1 + sprite->transform.x / sprite->transform.y));
 	sprite->height = abs((int)(p->res_h / sprite->transform.y));

@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 16:47:07 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 17:44:34 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,29 +201,29 @@ void	set_player_starting_direction(t_cub3d *p, char c)
 	{
 		p->player.dir.x = 0;
 		p->player.dir.y = -1;
-		p->cam_plane.x = -0.66;
-		p->cam_plane.y = 0;
+		p->player.cam_plane.x = -0.66;
+		p->player.cam_plane.y = 0;
 	}
 	else if (c == 'S')
 	{
 		p->player.dir.x = 0;
 		p->player.dir.y = 1;
-		p->cam_plane.x = 0.66;
-		p->cam_plane.y = 0;
+		p->player.cam_plane.x = 0.66;
+		p->player.cam_plane.y = 0;
 	}
 	else if (c == 'W')
 	{
 		p->player.dir.x = 1;
 		p->player.dir.y = 0;
-		p->cam_plane.x = 0.0;
-		p->cam_plane.y = -0.66;
+		p->player.cam_plane.x = 0.0;
+		p->player.cam_plane.y = -0.66;
 	}
 	else if (c == 'E')
 	{
 		p->player.dir.x = -1;
 		p->player.dir.y = 0;
-		p->cam_plane.x = 0.0;
-		p->cam_plane.y = 0.66;
+		p->player.cam_plane.x = 0.0;
+		p->player.cam_plane.y = 0.66;
 	}
 }
 

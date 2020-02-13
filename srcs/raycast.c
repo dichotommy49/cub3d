@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:01:52 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 16:47:27 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 17:45:02 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,8 @@ void	draw_world(t_cub3d *p)
 	while (++x < p->res_w)
 	{
 		camera_x = 2 * x / (double)p->res_w - 1;
-		i.ray_dir.x = p->player.dir.x + p->cam_plane.x * camera_x;
-		i.ray_dir.y = p->player.dir.y + p->cam_plane.y * camera_x;
+		i.ray_dir.x = p->player.dir.x + p->player.cam_plane.x * camera_x;
+		i.ray_dir.y = p->player.dir.y + p->player.cam_plane.y * camera_x;
 		raycast_calculations1(p, &i);
 		raycast_calculations2(p, &i);
 		draw_ceiling_wall_floor(p, &i, x);
