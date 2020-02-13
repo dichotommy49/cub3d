@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 16:48:39 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 16:57:49 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,11 +136,6 @@ typedef struct	s_cub3d
 //	struct timespec	time;
 	int			save_bmp;
 }				t_cub3d;
-
-typedef struct	s_raycast
-{
-
-}				t_raycast;
 
 /*
 **	initialization
