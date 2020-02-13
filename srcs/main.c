@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 17:23:03 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 17:34:36 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int				main(int argc, char **argv)
 	}
 	if (argc == 2 || (argc == 3 && p->save_bmp))
 	{
-		init_map_info(p);
 		if (!(p->map_info.cub_path = ft_strdup(argv[1])))
 			return (1);
 		parse_cub(p);

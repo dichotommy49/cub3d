@@ -44,30 +44,3 @@ void	init_game(t_cub3d *p)
 	p->player.move_speed = 0.1;
 	p->player.rot_speed = 0.05;
 }
-
-void		init_keys(t_cub3d *p)
-{
-	p->keys.up_arrow = 0;
-	p->keys.down_arrow = 0;
-	p->keys.left_arrow = 0;
-	p->keys.right_arrow = 0;
-	p->keys.w = 0;
-	p->keys.a = 0;
-	p->keys.s = 0;
-	p->keys.d = 0;
-	p->keys.space = 0;
-}
-
-void			init_map_info(t_cub3d *p)
-{
-	p->map_info.north_tex_path = 0;
-	p->map_info.south_tex_path = 0;
-	p->map_info.east_tex_path = 0;
-	p->map_info.west_tex_path = 0;
-	p->map_info.sprite_path = 0;
-	p->map_info.floor_color = 0;
-	p->map_info.ceiling_color = 0;
-	p->res_w = -1;
-	p->res_h = -1;
-	init_keys(p);
-}

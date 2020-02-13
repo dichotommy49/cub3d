@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 16:57:49 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/13 17:34:53 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,6 @@ typedef struct	s_cub3d
 
 void	init_textures(t_cub3d *p);
 void	init_game(t_cub3d *p);
-void	init_keys(t_cub3d *p);
-void	init_map_info(t_cub3d *p);
 
 /*
 **	core functions
