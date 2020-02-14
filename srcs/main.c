@@ -21,6 +21,9 @@ int				exit_cub3d(t_cub3d *p)
 		mlx_destroy_window(p->mlx_ptr, p->win_ptr);
 		p->win_ptr = NULL;
 	}
+	free(p->zbuffer);
+	free(p->sprites);
+	//should free level map as well
 	free(p);
 	printf("Cub3d terminated successfully.");
 	exit(0);
@@ -39,19 +42,17 @@ int				main(int argc, char **argv)
 	}
 	if (argc == 2 || (argc == 3 && p->save_bmp))
 	{
-		if (!(p->map_info.cub_path = ft_strdup(argv[1])))
+		parse_cub(p, argv[1]);
+		if (!(p->mlx_ptr = mlx_init()))
 			return (1);
-		parse_cub(p);
+		if (!(p->win_ptr = mlx_new_window(p->mlx_ptr, p->res_w, p->res_h, "cub3d")))
+			return (1);
+		init_game(p);
+		mlx_hook(p->win_ptr, 2, (1L<<0), key_press_hook, p);
+		mlx_hook(p->win_ptr, 3, (1L<<1), key_release_hook, p);
+		mlx_hook(p->win_ptr, 17, 0L, exit_cub3d, p);
+		mlx_loop_hook(p->mlx_ptr, loop_hook, p);
+		mlx_loop(p->mlx_ptr);
 	}
-	if (!(p->mlx_ptr = mlx_init()))
-		return (1);
-	if (!(p->win_ptr = mlx_new_window(p->mlx_ptr, p->res_w, p->res_h, "cub3d")))
-		return (1);
-	init_game(p);
-	mlx_hook(p->win_ptr, 2, (1L<<0), key_press_hook, p);
-	mlx_hook(p->win_ptr, 3, (1L<<1), key_release_hook, p);
-	mlx_hook(p->win_ptr, 17, 0L, exit_cub3d, p);
-	mlx_loop_hook(p->mlx_ptr, loop_hook, p);
-	mlx_loop(p->mlx_ptr);
 	return (0);
 }

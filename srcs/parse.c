@@ -134,14 +134,14 @@ int		get_map_height(char *cub)
 	return (i);
 }
 
-int		read_cub(t_map *map_info)
+int		read_cub(t_map *map_info, char *cub_path)
 {
 	int		fd;
 	int		r;
 	char	buf[32];
 	char	*cub;
 
-	if ((fd = open(map_info->cub_path, O_RDONLY)) < 0)
+	if ((fd = open(cub_path, O_RDONLY)) < 0)
 		return (-1);
 	if (!(cub = ft_strdup("")))
 		return (-1);
@@ -151,6 +151,8 @@ int		read_cub(t_map *map_info)
 		if (!(cub = cub3d_strjoin(cub, buf)))
 			return (-1);
 	}
+	if (r < 0)
+		return (-1);
 	map_info->cub_content = cub;
 	return (0);
 }
@@ -227,7 +229,7 @@ void	set_player_starting_direction(t_cub3d *p, char c)
 	}
 }
 
-int		parse_cub(t_cub3d *p)
+int		parse_cub(t_cub3d *p, char *cub_path)
 {
 	char	*cub;
 	int		x;
@@ -235,7 +237,7 @@ int		parse_cub(t_cub3d *p)
 	t_map 	*map_info;
 
 	map_info = &p->map_info;
-	if (read_cub(map_info) < 0)
+	if (read_cub(map_info, cub_path) < 0)
 		return (-1);
 	cub = map_info->cub_content;
 	while (*cub)
@@ -315,12 +317,7 @@ int		parse_cub(t_cub3d *p)
 		}
 		x++;
 	}
-	print_level_map(map_info);
 	free(map_info->cub_content);
 	map_info->cub_content = NULL;
-	free(map_info->cub_path);
-	map_info->cub_path = NULL;
-	map_info->tex_w = TEX_W;
-	map_info->tex_h = TEX_H;
 	return (0);
 }

@@ -13,6 +13,12 @@ void	init_textures(t_cub3d *p)
 	p->texture[4].img = mlx_xpm_file_to_image(p->mlx_ptr,
 			p->map_info.sprite_path, &p->map_info.tex_w, &p->map_info.tex_h);
 
+	free(p->map_info.north_tex_path);
+	free(p->map_info.south_tex_path);
+	free(p->map_info.east_tex_path);
+	free(p->map_info.west_tex_path);
+	free(p->map_info.sprite_path);
+
 	p->texture[0].addr = mlx_get_data_addr(p->texture[0].img, &p->texture[0].bpp
 			, &p->texture[0].line_length, &p->texture[0].endian);
 	p->texture[1].addr = mlx_get_data_addr(p->texture[1].img, &p->texture[1].bpp
@@ -38,6 +44,8 @@ void	init_game(t_cub3d *p)
 	p->screen2.addr = mlx_get_data_addr(p->screen2.img, &p->screen2.bpp,
 			&p->screen2.line_length, &p->screen2.endian);
 
+	p->map_info.tex_w = TEX_W;
+	p->map_info.tex_h = TEX_H;
 	//set textures
 	init_textures(p);
 

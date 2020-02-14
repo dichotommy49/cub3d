@@ -100,7 +100,6 @@ typedef struct	s_keys
 
 typedef struct	s_map
 {
-	char			*cub_path;
 	char			*cub_content;
 	char			*north_tex_path;
 	char			*south_tex_path;
@@ -171,7 +170,7 @@ void			draw_screen(t_cub3d *p);
 **	map processing
 */
 
-int				parse_cub(t_cub3d *p);
+int				parse_cub(t_cub3d *p, char *cub_path);
 
 /*
 **	tools (mostly for map processing)
