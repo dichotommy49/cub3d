@@ -16,8 +16,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <string.h>
 # include <stdio.h>
 # include <math.h>
+# include <errno.h>
 # include <time.h>
 # include "vector.h"
 # include "../mlx/mlx.h"
@@ -157,6 +159,7 @@ void			draw(t_cub3d *p);
 int				key_press_hook(int keycode, t_cub3d *p);
 int				key_release_hook(int keycode, t_cub3d *p);
 int				loop_hook(t_cub3d *p);
+int				exit_hook(t_cub3d *p);
 
 /*
 **	drawing
@@ -179,7 +182,7 @@ int				parse_cub(t_cub3d *p, char *cub_path);
 int				cub3d_atoi(char **str);
 unsigned int	cub3d_atoui(char **str);
 char			*cub3d_strjoin(char *s1, char *s2);
-int				exit_cub3d(t_cub3d *p);
+int				exit_cub3d(t_cub3d *p, int error, char *err_msg);
 
 void			reset_keys(t_cub3d *p);
 

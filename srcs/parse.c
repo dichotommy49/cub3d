@@ -22,7 +22,7 @@ void	get_resolution(char **cub, t_cub3d *p)
 	if (p->res_h > 1440)
 		p->res_h = 1440;
 	if (p->res_w <= 0 || p->res_h <= 0)
-		exit_cub3d(p);
+		exit_cub3d(p, 1, "Resolution is out of acceptable range\n");
 }
 
 void	get_texture_path(char **cub, t_map *map_info, char c)
@@ -154,6 +154,8 @@ int		read_cub(t_map *map_info, char *cub_path)
 	if (r < 0)
 		return (-1);
 	map_info->cub_content = cub;
+	if (close(fd) < 0)
+		return (-1);
 	return (0);
 }
 
@@ -238,7 +240,7 @@ int		parse_cub(t_cub3d *p, char *cub_path)
 
 	map_info = &p->map_info;
 	if (read_cub(map_info, cub_path) < 0)
-		return (-1);
+		exit_cub3d(p, 1, "Problem reading .cub file\n");
 	cub = map_info->cub_content;
 	while (*cub)
 	{

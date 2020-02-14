@@ -13,7 +13,7 @@
 #include "../includes/cub3d.h"
 
 
-int				exit_cub3d(t_cub3d *p)
+int				exit_cub3d(t_cub3d *p, int error, char *err_msg)
 {
 	if (p->mlx_ptr && p->win_ptr)
 	{
@@ -21,11 +21,34 @@ int				exit_cub3d(t_cub3d *p)
 		mlx_destroy_window(p->mlx_ptr, p->win_ptr);
 		p->win_ptr = NULL;
 	}
-	free(p->zbuffer);
-	free(p->sprites);
+	if (error)
+	{
+		if (p->map_info.cub_content)
+			free(p->map_info.cub_content);
+		if (p->map_info.north_tex_path)
+			free(p->map_info.north_tex_path);
+		if (p->map_info.south_tex_path)
+			free(p->map_info.south_tex_path);
+		if (p->map_info.east_tex_path)
+			free(p->map_info.east_tex_path);
+		if (p->map_info.west_tex_path)
+			free(p->map_info.west_tex_path);
+		if (p->map_info.sprite_path)
+			free(p->map_info.sprite_path);
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		ft_putstr_fd(err_msg, STDERR_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd("Cub3d terminated successfully\n", STDOUT_FILENO);
+	}
+	if (p->zbuffer)
+		free(p->zbuffer);
+	if (p->sprites)
+		free(p->sprites);
 	//should free level map as well
-	free(p);
-	printf("Cub3d terminated successfully.");
+	if (p)
+		free(p);
 	exit(0);
 	return (0);
 }
@@ -34,8 +57,8 @@ int				main(int argc, char **argv)
 {
 	t_cub3d		*p;
 
-	if (argc < 2 || !(p = ft_calloc(sizeof(t_cub3d), 1)))
-		return (1);
+	if (!(p = ft_calloc(sizeof(t_cub3d), 1)))
+		exit_cub3d(p, 1, "Malloc failed\n");
 	if (argc == 3 && ft_strcmp(argv[2], "--save") == 0)
 	{
 		p->save_bmp = 1;
@@ -50,9 +73,13 @@ int				main(int argc, char **argv)
 		init_game(p);
 		mlx_hook(p->win_ptr, 2, (1L<<0), key_press_hook, p);
 		mlx_hook(p->win_ptr, 3, (1L<<1), key_release_hook, p);
-		mlx_hook(p->win_ptr, 17, 0L, exit_cub3d, p);
+		mlx_hook(p->win_ptr, 17, 0L, exit_hook, p);
 		mlx_loop_hook(p->mlx_ptr, loop_hook, p);
 		mlx_loop(p->mlx_ptr);
+	}
+	else
+	{
+		exit_cub3d(p, 1, "Incorrect arguments\n");
 	}
 	return (0);
 }

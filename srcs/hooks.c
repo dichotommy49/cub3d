@@ -39,7 +39,7 @@ int				key_press_hook(int keycode, t_cub3d *p)
 		p->keys.right_arrow = 1;
 	}
 	if (keycode == 53)
-		exit_cub3d(p);
+		exit_cub3d(p, 0, NULL);
 	return (0);
 }
 
@@ -83,5 +83,11 @@ int				loop_hook(t_cub3d *p)
 //	p->player.rot_speed = frame_time * 3.0;
 	update(p);
 	draw(p);
+	return (0);
+}
+
+int				exit_hook(t_cub3d *p)
+{
+	exit_cub3d(p, 0, NULL);
 	return (0);
 }
