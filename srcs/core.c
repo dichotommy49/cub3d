@@ -79,16 +79,8 @@ void		update_player(t_cub3d *p)
 
 void		draw_screen(t_cub3d *p)
 {
-	if (p->current_screen == 1)
-	{
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->screen2.img, 0, 0);
-		p->current_screen = 2;
-	}
-	else
-	{
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->screen1.img, 0, 0);
-		p->current_screen = 1;
-	}
+	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->screen[p->current_screen].img, 0, 0);
+	p->current_screen = 1 - p->current_screen;
 }
 
 void		update(t_cub3d *p)

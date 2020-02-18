@@ -17,10 +17,7 @@ void            my_mlx_pixel_put(t_cub3d *p, int x, int y, int color)
 	t_img	dst_img;
 	char    *dst;
 
-	if (p->current_screen == 1)
-		dst_img = p->screen2;
-	else
-		dst_img = p->screen1;
+	dst_img = p->screen[1 - p->current_screen];
 	dst = dst_img.addr + (y * dst_img.line_length + x * (dst_img.bpp / 8));
 	*(unsigned int *)dst = color;
 }

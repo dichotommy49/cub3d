@@ -124,8 +124,7 @@ typedef struct	s_cub3d
 	int			res_w;
 	int			res_h;
 	t_player	player;
-	t_img		screen1;
-	t_img		screen2;
+	t_img		screen[2];
 	int			current_screen;
 	t_img		texture[5];
 	t_map		map_info;

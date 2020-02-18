@@ -36,13 +36,13 @@ void	init_game(t_cub3d *p)
 	if (!(p->zbuffer = malloc(sizeof(double) * p->res_w)))
 		return ;
 //	clock_gettime(CLOCK_REALTIME, &p->time);
-	p->current_screen = 1;
-	p->screen1.img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
-	p->screen1.addr = mlx_get_data_addr(p->screen1.img, &p->screen1.bpp,
-			&p->screen1.line_length, &p->screen1.endian);
-	p->screen2.img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
-	p->screen2.addr = mlx_get_data_addr(p->screen2.img, &p->screen2.bpp,
-			&p->screen2.line_length, &p->screen2.endian);
+	p->current_screen = 0;
+	p->screen[0].img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
+	p->screen[0].addr = mlx_get_data_addr(p->screen[0].img, &p->screen[0].bpp,
+			&p->screen[0].line_length, &p->screen[0].endian);
+	p->screen[1].img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
+	p->screen[1].addr = mlx_get_data_addr(p->screen[1].img, &p->screen[1].bpp,
+			&p->screen[1].line_length, &p->screen[1].endian);
 
 	p->map_info.tex_w = TEX_W;
 	p->map_info.tex_h = TEX_H;
