@@ -31,3 +31,23 @@ unsigned int	my_mlx_pixel_get(t_img img, int x, int y)
 	color = *(unsigned int *)ptr;
 	return (color);
 }
+
+unsigned char	get_t(unsigned int trgb)
+{
+	return ((trgb & 0xff000000) / pow(16, 6));
+}
+
+unsigned char	get_r(unsigned int trgb)
+{
+	return ((trgb & 0x00ff0000) / pow(16, 4));
+}
+
+unsigned char	get_g(unsigned int trgb)
+{
+	return ((trgb & 0x0000ff00) / pow(16, 2));
+}
+
+unsigned char	get_b(unsigned int trgb)
+{
+	return (trgb & 0x000000ff);
+}

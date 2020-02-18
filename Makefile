@@ -4,7 +4,7 @@ MLXDIR := ./mlx/
 MLX := libmlx.a
 LIBFTDIR := ./libft/
 LIBFT := libft.a
-SRC := main raycast vector img hooks parse tools core sprites init
+SRC := main raycast vector img hooks parse tools core sprites init bmp
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra 
 CFILES := $(addprefix $(SRCDIR), $(addsuffix .c, $(SRC)))
@@ -30,7 +30,7 @@ clean :
 	$(MAKE) -C $(LIBFTDIR) clean
 
 fclean : clean
-	rm -f $(NAME) $(MLX) $(LIBFT)
+	rm -f $(NAME) $(MLX) $(LIBFT) *.bmp
 
 re: fclean all
 

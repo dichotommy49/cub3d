@@ -13,7 +13,7 @@
 #include "../includes/cub3d.h"
 
 
-int				exit_cub3d(t_cub3d *p, int error, char *err_msg)
+int				exit_cub3d(t_cub3d *p, int error, char *msg)
 {
 	if (p->mlx_ptr && p->win_ptr)
 	{
@@ -36,10 +36,12 @@ int				exit_cub3d(t_cub3d *p, int error, char *err_msg)
 		if (p->map_info.sprite_path)
 			free(p->map_info.sprite_path);
 		ft_putstr_fd("Error\n", STDERR_FILENO);
-		ft_putstr_fd(err_msg, STDERR_FILENO);
+		ft_putstr_fd(msg, STDERR_FILENO);
 	}
 	else
 	{
+		if (msg)
+			ft_putstr_fd(msg, STDOUT_FILENO);
 		ft_putstr_fd("Cub3d terminated successfully\n", STDOUT_FILENO);
 	}
 	if (p->zbuffer)

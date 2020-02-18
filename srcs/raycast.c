@@ -135,4 +135,6 @@ void	draw_world(t_cub3d *p)
 		draw_ceiling_wall_floor(p, &i, x);
 		p->zbuffer[x] = i.perp_wall_dist;
 	}
+	if (p->save_bmp == 1)
+		write_bmp(p);
 }

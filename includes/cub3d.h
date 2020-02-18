@@ -22,6 +22,7 @@
 # include <errno.h>
 # include <time.h>
 # include "vector.h"
+# include "bmp.h"
 # include "../mlx/mlx.h"
 # include "../libft/libft.h"
 
@@ -183,9 +184,13 @@ unsigned int	cub3d_atoui(char **str);
 char			*cub3d_strjoin(char *s1, char *s2);
 int				exit_cub3d(t_cub3d *p, int error, char *err_msg);
 
-void			reset_keys(t_cub3d *p);
-
 void			my_mlx_pixel_put(t_cub3d *p, int x, int y, int color);
 unsigned int	my_mlx_pixel_get(t_img img, int x, int y);
+unsigned char	get_t(unsigned int tgrb);
+unsigned char	get_r(unsigned int tgrb);
+unsigned char	get_g(unsigned int tgrb);
+unsigned char	get_b(unsigned int tgrb);
+
+void			write_bmp(t_cub3d *p);
 
 #endif
