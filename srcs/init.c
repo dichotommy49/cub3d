@@ -14,10 +14,15 @@ void	init_textures(t_cub3d *p)
 			p->map_info.sprite_path, &p->map_info.tex_w, &p->map_info.tex_h);
 
 	free(p->map_info.north_tex_path);
+	p->map_info.north_tex_path = NULL;
 	free(p->map_info.south_tex_path);
+	p->map_info.south_tex_path = NULL;
 	free(p->map_info.east_tex_path);
+	p->map_info.east_tex_path = NULL;
 	free(p->map_info.west_tex_path);
+	p->map_info.west_tex_path = NULL;
 	free(p->map_info.sprite_path);
+	p->map_info.sprite_path = NULL;
 
 	p->texture[0].addr = mlx_get_data_addr(p->texture[0].img, &p->texture[0].bpp
 			, &p->texture[0].line_length, &p->texture[0].endian);

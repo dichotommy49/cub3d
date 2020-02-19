@@ -12,38 +12,25 @@
 
 #include "../includes/cub3d.h"
 
-
-int				exit_cub3d(t_cub3d *p, int error, char *msg)
+void			exit_cub3d(t_cub3d *p, int error, char *msg)
 {
 	if (p->mlx_ptr && p->win_ptr)
 	{
 		mlx_clear_window(p->mlx_ptr, p->win_ptr);
 		mlx_destroy_window(p->mlx_ptr, p->win_ptr);
-		p->win_ptr = NULL;
 	}
-	if (error)
-	{
-		if (p->map_info.cub_content)
-			free(p->map_info.cub_content);
-		if (p->map_info.north_tex_path)
-			free(p->map_info.north_tex_path);
-		if (p->map_info.south_tex_path)
-			free(p->map_info.south_tex_path);
-		if (p->map_info.east_tex_path)
-			free(p->map_info.east_tex_path);
-		if (p->map_info.west_tex_path)
-			free(p->map_info.west_tex_path);
-		if (p->map_info.sprite_path)
-			free(p->map_info.sprite_path);
-		ft_putstr_fd("Error\n", STDERR_FILENO);
-		ft_putstr_fd(msg, STDERR_FILENO);
-	}
-	else
-	{
-		if (msg)
-			ft_putstr_fd(msg, STDOUT_FILENO);
-		ft_putstr_fd("Cub3d terminated successfully\n", STDOUT_FILENO);
-	}
+	if (p->map_info.cub_content)
+		free(p->map_info.cub_content);
+	if (p->map_info.north_tex_path)
+		free(p->map_info.north_tex_path);
+	if (p->map_info.south_tex_path)
+		free(p->map_info.south_tex_path);
+	if (p->map_info.east_tex_path)
+		free(p->map_info.east_tex_path);
+	if (p->map_info.west_tex_path)
+		free(p->map_info.west_tex_path);
+	if (p->map_info.sprite_path)
+		free(p->map_info.sprite_path);
 	if (p->zbuffer)
 		free(p->zbuffer);
 	if (p->sprites)
@@ -51,8 +38,19 @@ int				exit_cub3d(t_cub3d *p, int error, char *msg)
 	//should free level map as well
 	if (p)
 		free(p);
+	if (error)
+	{
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		ft_putstr_fd(msg, STDERR_FILENO);
+		exit(1);
+	}
+	else
+	{
+		if (msg)
+			ft_putstr_fd(msg, STDOUT_FILENO);
+		ft_putstr_fd("Cub3d terminated successfully\n", STDOUT_FILENO);
+	}
 	exit(0);
-	return (0);
 }
 
 int				main(int argc, char **argv)
@@ -69,9 +67,9 @@ int				main(int argc, char **argv)
 	{
 		parse_cub(p, argv[1]);
 		if (!(p->mlx_ptr = mlx_init()))
-			return (1);
+			exit_cub3d(p, 1, "Mlx initialization failed\n");
 		if (!(p->win_ptr = mlx_new_window(p->mlx_ptr, p->res_w, p->res_h, "cub3d")))
-			return (1);
+			exit_cub3d(p, 1, "Mlx new window failed\n");
 		init_game(p);
 		mlx_hook(p->win_ptr, 2, (1L<<0), key_press_hook, p);
 		mlx_hook(p->win_ptr, 3, (1L<<1), key_release_hook, p);

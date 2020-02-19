@@ -182,7 +182,7 @@ int				parse_cub(t_cub3d *p, char *cub_path);
 int				cub3d_atoi(char **str);
 unsigned int	cub3d_atoui(char **str);
 char			*cub3d_strjoin(char *s1, char *s2);
-int				exit_cub3d(t_cub3d *p, int error, char *err_msg);
+void			exit_cub3d(t_cub3d *p, int error, char *err_msg);
 
 void			my_mlx_pixel_put(t_cub3d *p, int x, int y, int color);
 unsigned int	my_mlx_pixel_get(t_img img, int x, int y);
