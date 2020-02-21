@@ -22,7 +22,7 @@ void	get_resolution(char **cub, t_cub3d *p)
 	if (p->res_h > 1440)
 		p->res_h = 1440;
 	if (p->res_w <= 0 || p->res_h <= 0)
-		exit_cub3d(p, 1, "Resolution is out of acceptable range\n");
+		exit_cub3d(p, 1, "Resolution cannot be negative\n");
 }
 
 void	get_texture_path(char **cub, t_map *map_info, char c)
@@ -139,21 +139,19 @@ int		read_cub(t_map *map_info, char *cub_path)
 	int		fd;
 	int		r;
 	char	buf[32];
-	char	*cub;
 
 	if ((fd = open(cub_path, O_RDONLY)) < 0)
 		return (-1);
-	if (!(cub = ft_strdup("")))
+	if (!(map_info->cub_content = ft_strdup("")))
 		return (-1);
 	while ((r = read(fd, buf, 31)) > 0)
 	{
 		buf[r] = 0;
-		if (!(cub = cub3d_strjoin(cub, buf)))
+		if (!(map_info->cub_content = cub3d_strjoin(map_info->cub_content, buf)))
 			return (-1);
 	}
 	if (r < 0)
 		return (-1);
-	map_info->cub_content = cub;
 	if (close(fd) < 0)
 		return (-1);
 	return (0);
@@ -231,37 +229,53 @@ void	set_player_starting_direction(t_cub3d *p, char c)
 	}
 }
 
-int		parse_cub(t_cub3d *p, char *cub_path)
+char	*process_non_map_info(t_cub3d *p)
 {
 	char	*cub;
-	int		x;
-	int		y;
-	t_map 	*map_info;
-
-	map_info = &p->map_info;
-	if (read_cub(map_info, cub_path) < 0)
-		exit_cub3d(p, 1, "Problem reading .cub file\n");
-	cub = map_info->cub_content;
+	
+	cub = p->map_info.cub_content;
 	while (*cub)
 	{
-		while (*cub == ' ' || *cub == '\n')
-			cub++;
 		if (*cub == 'R')
 			get_resolution(&cub, p);
 		if (*cub == 'N' || *cub == 'W' || *cub == 'E' || (*cub == 'S' && *(cub + 1) == 'O'))
-			get_texture_path(&cub, map_info, *cub);
+			get_texture_path(&cub, &p->map_info, *cub);
 		if (*cub == 'S')
-			get_sprite_path(&cub, map_info);
+			get_sprite_path(&cub, &p->map_info);
 		if (*cub == 'F')
-			get_color(&cub, map_info, 0);
+			get_color(&cub, &p->map_info, 0);
 		if (*cub == 'C')
-			get_color(&cub, map_info, 1);
+			get_color(&cub, &p->map_info, 1);
 		if (ft_isdigit(*cub) && *(cub - 1) == '\n')
 			break ;
+		while (*cub == ' ' || *cub == '\n')
+			cub++;
 	}
+	return (cub);
+}
+
+//char	*process_map(t_cub3d *p)
+//{
+//	
+//}
+
+int		parse_cub(t_cub3d *p, char *cub_path)
+{
+	int		x;
+	int		y;
+	char	*cub;
+	t_map	*map_info;
+
+	if (read_cub(&p->map_info, cub_path) < 0)
+		exit_cub3d(p, 1, "Problem reading .cub file\n");
+	map_info = &p->map_info;
+	cub = process_non_map_info(p);
+	
 	map_info->map_w = get_map_width(cub);
 	map_info->map_h = get_map_height(cub);
 	map_info->level_map = malloc(sizeof(int *) * map_info->map_w);
+//	cub = process_map(p);
+	
 	x = 0;
 	while (x < map_info->map_w)
 		map_info->level_map[x++] = malloc(sizeof(int) * map_info->map_h);
