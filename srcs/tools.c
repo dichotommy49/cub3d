@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:11:07 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/01/22 15:43:13 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/21 12:27:44 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,10 @@ char	*cub3d_strjoin(char *s1, char *s2)
 	output[i + j] = 0;
 	free(s1);
 	return (output);
+}
+
+void	update_cam_plane(t_cub3d *p)
+{
+	p->player.cam_plane.x = p->player.dir.y * 0.66;
+	p->player.cam_plane.y = p->player.dir.x * -0.66;
 }

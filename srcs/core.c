@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 15:55:42 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 17:44:07 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/21 12:47:45 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,14 @@ void		look_left_right(t_cub3d *p)
 		double old_dir_x = p->player.dir.x;
 		p->player.dir.x = p->player.dir.x * cos(p->player.rot_speed) - p->player.dir.y * sin(p->player.rot_speed);
 		p->player.dir.y = old_dir_x * sin(p->player.rot_speed) + p->player.dir.y * cos(p->player.rot_speed);
-		double old_plane_x = p->player.cam_plane.x;
-		p->player.cam_plane.x = p->player.cam_plane.x * cos(p->player.rot_speed) - p->player.cam_plane.y * sin(p->player.rot_speed);
-		p->player.cam_plane.y = old_plane_x * sin(p->player.rot_speed) + p->player.cam_plane.y * cos(p->player.rot_speed);
+		update_cam_plane(p);
 	}
 	if (p->keys.right_arrow)
 	{
 		double old_dir_x = p->player.dir.x;
 		p->player.dir.x = p->player.dir.x * cos(-p->player.rot_speed) - p->player.dir.y * sin(-p->player.rot_speed);
 		p->player.dir.y = old_dir_x * sin(-p->player.rot_speed) + p->player.dir.y * cos(-p->player.rot_speed);
-		double old_plane_x = p->player.cam_plane.x;
-		p->player.cam_plane.x = p->player.cam_plane.x * cos(-p->player.rot_speed) - p->player.cam_plane.y * sin(-p->player.rot_speed);
-		p->player.cam_plane.y = old_plane_x * sin(-p->player.rot_speed) + p->player.cam_plane.y * cos(-p->player.rot_speed);
+		update_cam_plane(p);
 	}
 }
 

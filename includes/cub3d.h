@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 17:40:04 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/21 12:59:40 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ typedef struct	s_player
 	t_vector	cam_plane;
 	double		move_speed;
 	double		rot_speed;
+	t_vector	starting_pos;
+	t_vector	starting_dir;
 }				t_player;
 
 typedef struct	s_keys
@@ -173,7 +175,7 @@ void			draw_screen(t_cub3d *p);
 **	map processing
 */
 
-int				parse_cub(t_cub3d *p, char *cub_path);
+void			parse_cub(t_cub3d *p, char *cub_path);
 
 /*
 **	tools (mostly for map processing)
@@ -183,6 +185,8 @@ int				cub3d_atoi(char **str);
 unsigned int	cub3d_atoui(char **str);
 char			*cub3d_strjoin(char *s1, char *s2);
 void			exit_cub3d(t_cub3d *p, int error, char *err_msg);
+
+void			update_cam_plane(t_cub3d *p);
 
 void			my_mlx_pixel_put(t_cub3d *p, int x, int y, int color);
 unsigned int	my_mlx_pixel_get(t_img img, int x, int y);

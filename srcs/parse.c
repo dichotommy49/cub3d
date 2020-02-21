@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 17:44:34 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/21 13:03:46 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,25 +157,6 @@ int		read_cub(t_map *map_info, char *cub_path)
 	return (0);
 }
 
-void	zero_level_map(t_map *map_info)
-{
-	int x;
-	int y;
-
-	x = 0;
-	y = 0;
-	while (x < map_info->map_w)
-	{
-		y = 0;
-		while (y < map_info->map_h)
-		{
-			map_info->level_map[x][y] = 0;
-			y++;
-		}
-		x++;
-	}
-}
-
 void	print_level_map(t_map *map_info)
 {
 	int x;
@@ -197,42 +178,38 @@ void	print_level_map(t_map *map_info)
 	}
 }
 
-void	set_player_starting_direction(t_cub3d *p, char c)
+void	set_player_starting_direction(t_cub3d *p, char c, int x, int y)
 {
+	p->player.starting_pos.x = x + 0.5;
+	p->player.starting_pos.y = y + 0.5;
 	if (c == 'N')
 	{
-		p->player.dir.x = 0;
-		p->player.dir.y = -1;
-		p->player.cam_plane.x = -0.66;
-		p->player.cam_plane.y = 0;
+		p->player.starting_dir.x = 0;
+		p->player.starting_dir.y = -1;
 	}
 	else if (c == 'S')
 	{
-		p->player.dir.x = 0;
-		p->player.dir.y = 1;
-		p->player.cam_plane.x = 0.66;
-		p->player.cam_plane.y = 0;
+		p->player.starting_dir.x = 0;
+		p->player.starting_dir.y = 1;
 	}
 	else if (c == 'W')
 	{
-		p->player.dir.x = 1;
-		p->player.dir.y = 0;
-		p->player.cam_plane.x = 0.0;
-		p->player.cam_plane.y = -0.66;
+		p->player.starting_dir.x = 1;
+		p->player.starting_dir.y = 0;
 	}
 	else if (c == 'E')
 	{
-		p->player.dir.x = -1;
-		p->player.dir.y = 0;
-		p->player.cam_plane.x = 0.0;
-		p->player.cam_plane.y = 0.66;
+		p->player.starting_dir.x = -1;
+		p->player.starting_dir.y = 0;
 	}
+	else
+		exit_cub3d(p, 1, "Unrecognized alpha character in map section of .cub\n");
 }
 
 char	*process_non_map_info(t_cub3d *p)
 {
 	char	*cub;
-	
+
 	cub = p->map_info.cub_content;
 	while (*cub)
 	{
@@ -254,75 +231,75 @@ char	*process_non_map_info(t_cub3d *p)
 	return (cub);
 }
 
-//char	*process_map(t_cub3d *p)
-//{
-//	
-//}
-
-int		parse_cub(t_cub3d *p, char *cub_path)
+//	this function copies the map into an int matrix. also gets number of sprites
+//	for allocation. sets player starting location and direction.
+void	copy_map(t_cub3d *p, char *cub)
 {
-	int		x;
-	int		y;
-	char	*cub;
-	t_map	*map_info;
+	int	x;
+	int	y;
 
-	if (read_cub(&p->map_info, cub_path) < 0)
-		exit_cub3d(p, 1, "Problem reading .cub file\n");
-	map_info = &p->map_info;
-	cub = process_non_map_info(p);
-	
-	map_info->map_w = get_map_width(cub);
-	map_info->map_h = get_map_height(cub);
-	map_info->level_map = malloc(sizeof(int *) * map_info->map_w);
-//	cub = process_map(p);
-	
-	x = 0;
-	while (x < map_info->map_w)
-		map_info->level_map[x++] = malloc(sizeof(int) * map_info->map_h);
-	zero_level_map(map_info);
-	x = 0;
 	y = 0;
-	p->num_sprites = 0;
-	while (y < map_info->map_h)
+	while (y < p->map_info.map_h)
 	{
-		x = map_info->map_w - 1;
+		x = p->map_info.map_w - 1;
 		while (x >= 0)
 		{
 			if (*cub == '\n' || *cub == ' ')
-			{
 				cub++;
-			}
 			else
 			{
-				if (*cub == 'N' || *cub == 'S' || *cub == 'W' || *cub == 'E')
+				if (*cub == '2')
+					p->num_sprites++;
+				if (ft_isalpha(*cub))
 				{
-					p->player.pos.x = x + 0.5; 
-					p->player.pos.y = y + 0.5;
-					set_player_starting_direction(p, *cub);
+					set_player_starting_direction(p, *cub, x, y);
 					*cub = '0';
 				}
-				else if (*cub == '2')
-				{
-					p->num_sprites++;
-				}
-				map_info->level_map[x][y] = *cub - '0';
+				p->map_info.level_map[x][y] = *cub - '0';
 				cub++;
 				x--;
 			}
 		}
 		y++;
 	}
-	//allocate sprite array and get sprite positions
-	if (!(p->sprites = malloc(sizeof(t_sprite) * p->num_sprites)))
-		return (-1);
+}
+
+void	process_map_info(t_cub3d *p, char *cub)
+{
+	int	x;
+	t_map	*map_info;
+
+	map_info = &p->map_info;
+	if ((map_info->map_w = get_map_width(cub)) <= 0)
+		exit_cub3d(p, 1, "Problem reading map in .cub\n");
+	if ((map_info->map_h = get_map_height(cub)) <= 0)
+		exit_cub3d(p, 1, "Problem reading map in .cub\n");
+	if (!(map_info->level_map = ft_calloc(sizeof(int *), map_info->map_w)))
+		exit_cub3d(p, 1, "Malloc for level map failed\n");
 	x = 0;
-	int	i = 0;
 	while (x < map_info->map_w)
 	{
+		if (!(map_info->level_map[x++] = ft_calloc(sizeof(int), map_info->map_h)))
+			exit_cub3d(p, 1, "Malloc for level map failed\n");
+	}
+}
+
+void	process_sprites(t_cub3d *p)
+{
+	int	x;
+	int	y;
+	int	i;
+	
+	if (!(p->sprites = ft_calloc(sizeof(t_sprite), p->num_sprites)))
+		exit_cub3d(p, 1, "Malloc for sprites failed\n");
+	x = 0;
+	i = 0;
+	while (x < p->map_info.map_w)
+	{
 		y = 0;
-		while (y < map_info->map_h)
+		while (y < p->map_info.map_h)
 		{
-			if (map_info->level_map[x][y] == 2)
+			if (p->map_info.level_map[x][y] == 2)
 			{
 				p->sprites[i].x = x + 0.5;
 				p->sprites[i].y = y + 0.5;
@@ -333,7 +310,21 @@ int		parse_cub(t_cub3d *p, char *cub_path)
 		}
 		x++;
 	}
-	free(map_info->cub_content);
-	map_info->cub_content = NULL;
-	return (0);
+}
+
+void	parse_cub(t_cub3d *p, char *cub_path)
+{
+	char	*cub;
+	t_map	*map_info;
+
+	if (read_cub(&p->map_info, cub_path) < 0)
+		exit_cub3d(p, 1, "Problem reading .cub file\n");
+	map_info = &p->map_info;
+	cub = process_non_map_info(p);
+	//	cub is now pointing to start of map element
+	process_map_info(p, cub);
+	copy_map(p, cub);
+
+	//allocate sprite array and get sprite positions
+	process_sprites(p);
 }

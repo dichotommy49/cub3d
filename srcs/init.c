@@ -38,8 +38,8 @@ void	init_textures(t_cub3d *p)
 
 void	init_game(t_cub3d *p)
 {
-	if (!(p->zbuffer = malloc(sizeof(double) * p->res_w)))
-		return ;
+	if (!(p->zbuffer = ft_calloc(sizeof(double), p->res_w)))
+		exit_cub3d(p, 1, "Malloc for zbuffer failed\n");
 //	clock_gettime(CLOCK_REALTIME, &p->time);
 	p->current_screen = 0;
 	p->screen[0].img = mlx_new_image(p->mlx_ptr, p->res_w, p->res_h);
@@ -51,9 +51,12 @@ void	init_game(t_cub3d *p)
 
 	p->map_info.tex_w = TEX_W;
 	p->map_info.tex_h = TEX_H;
-	//set textures
+
 	init_textures(p);
 
+	p->player.pos = p->player.starting_pos;
+	p->player.dir = p->player.starting_dir;
+	update_cam_plane(p);
 	p->player.move_speed = 0.1;
 	p->player.rot_speed = 0.05;
 }

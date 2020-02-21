@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/13 17:34:36 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/21 13:09:27 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,18 @@ void			exit_cub3d(t_cub3d *p, int error, char *msg)
 		free(p->zbuffer);
 	if (p->sprites)
 		free(p->sprites);
-	//should free level map as well
+	//free level map
+	if (p->map_info.level_map)
+	{
+		int	x = 0;
+		while (x < p->map_info.map_w)
+		{
+			if (p->map_info.level_map[x])
+				free(p->map_info.level_map[x]);
+			x++;
+		}
+		free(p->map_info.level_map);
+	}
 	if (p)
 		free(p);
 	if (error)
