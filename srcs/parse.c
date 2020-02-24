@@ -286,10 +286,10 @@ void	process_map_info(t_cub3d *p, char *cub)
 	t_map	*map_info;
 
 	map_info = &p->map_info;
-	if ((map_info->map_w = get_map_width(cub)) <= 0)
-		exit_cub3d(p, 1, "Problem reading map in .cub\n");
-	if ((map_info->map_h = get_map_height(cub)) <= 0)
-		exit_cub3d(p, 1, "Problem reading map in .cub\n");
+	if ((map_info->map_w = get_map_width(cub)) <= 1)
+		exit_cub3d(p, 1, "Width of map cannot be 1 or smaller\n");
+	if ((map_info->map_h = get_map_height(cub)) <= 1)
+		exit_cub3d(p, 1, "Height of map cannot be 1 or smaller\n");
 	if (!(map_info->level_map = ft_calloc(sizeof(int *), map_info->map_w)))
 		exit_cub3d(p, 1, "Malloc for level map failed\n");
 	x = 0;
@@ -356,10 +356,12 @@ void	parse_cub(t_cub3d *p, char *cub_path)
 
 	if (read_cub(&p->map_info, cub_path) < 0)
 		exit_cub3d(p, 1, "Problem reading .cub file\n");
+	if (*p->map_info.cub_content == 0)
+		exit_cub3d(p, 1, ".cub file is empty\n");
 	cub = process_non_map_info(p);
 	//	cub is now pointing to start of map element
-	process_map_info(p, cub);
 	check_map_errors(p, cub);
+	process_map_info(p, cub);
 	copy_map(p, cub);
 	check_map_enclosed(p);
 
