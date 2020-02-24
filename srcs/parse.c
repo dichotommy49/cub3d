@@ -180,6 +180,8 @@ void	print_level_map(t_map *map_info)
 
 void	set_player_starting_direction(t_cub3d *p, char c, int x, int y)
 {
+	if (p->player.starting_pos.x != 0)
+		exit_cub3d(p, 1, "Map contains multiple spawn locations\n");	
 	p->player.starting_pos.x = x + 0.5;
 	p->player.starting_pos.y = y + 0.5;
 	if (c == 'N')
@@ -202,8 +204,6 @@ void	set_player_starting_direction(t_cub3d *p, char c, int x, int y)
 		p->player.starting_dir.x = -1;
 		p->player.starting_dir.y = 0;
 	}
-	else
-		exit_cub3d(p, 1, "Unrecognized alpha character in map section of .cub\n");
 }
 
 char	*process_non_map_info(t_cub3d *p)
@@ -229,6 +229,22 @@ char	*process_non_map_info(t_cub3d *p)
 			cub++;
 	}
 	return (cub);
+}
+
+void	check_map_errors(t_cub3d *p, char *cub)
+{
+	while (*cub)
+	{
+		if (*cub == ' ')
+			if (*(cub + 1) == ' ')
+				exit_cub3d(p, 1, "Map contains multiple spaces in a row\n");
+		if (*cub == '\n')
+			if (*(cub + 1) == '\n')
+				exit_cub3d(p, 1, "Map contains an empty line\n");
+		if (*cub != 'N' && *cub != 'S' && *cub != 'E' && *cub != 'W' && *cub != ' ' && *cub != '\n' && *cub != '2' && *cub != '1' && *cub != '0')
+			exit_cub3d(p, 1, "Map contains unrecognized character\n");
+		cub++;
+	}
 }
 
 //	this function copies the map into an int matrix. also gets number of sprites
@@ -284,7 +300,7 @@ void	process_map_info(t_cub3d *p, char *cub)
 	}
 }
 
-void	process_sprites(t_cub3d *p)
+void	initialize_sprites(t_cub3d *p)
 {
 	int	x;
 	int	y;
@@ -312,19 +328,41 @@ void	process_sprites(t_cub3d *p)
 	}
 }
 
+void	check_map_enclosed(t_cub3d *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->map_info.map_h)
+	{
+		if (p->map_info.level_map[0][i] == 1 && p->map_info.level_map[p->map_info.map_w - 1][i] == 1)
+			i++;
+		else
+			exit_cub3d(p, 1, "Map is not fully enclosed\n");
+	}
+	i = 0;
+	while (i < p->map_info.map_w)
+	{
+		if (p->map_info.level_map[i][0] == 1 && p->map_info.level_map[i][p->map_info.map_h - 1] == 1)
+			i++;
+		else
+			exit_cub3d(p, 1, "Map is not fully enclosed\n");
+	}
+}
+
 void	parse_cub(t_cub3d *p, char *cub_path)
 {
 	char	*cub;
-	t_map	*map_info;
 
 	if (read_cub(&p->map_info, cub_path) < 0)
 		exit_cub3d(p, 1, "Problem reading .cub file\n");
-	map_info = &p->map_info;
 	cub = process_non_map_info(p);
 	//	cub is now pointing to start of map element
 	process_map_info(p, cub);
+	check_map_errors(p, cub);
 	copy_map(p, cub);
+	check_map_enclosed(p);
 
 	//allocate sprite array and get sprite positions
-	process_sprites(p);
+	initialize_sprites(p);
 }
