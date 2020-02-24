@@ -1,6 +1,9 @@
 # cub3d
 Basic subject version of cub3d project from 42 cursus.
+
 Run with .cub file as first argument. If second argument is "--save", a .bmp file of the first rendered image will be created.
+
+
 
 Example format for a .cub file:
 
