@@ -13,6 +13,9 @@ void	init_textures(t_cub3d *p)
 	p->texture[4].img = mlx_xpm_file_to_image(p->mlx_ptr,
 			p->map_info.sprite_path, &p->map_info.tex_w, &p->map_info.tex_h);
 
+	if (!p->texture[0].img || !p->texture[1].img || !p->texture[2].img || !p->texture[3].img || !p->texture[4].img)
+		exit_cub3d(p, 1, "Problem with texture path\n");
+	
 	free(p->map_info.north_tex_path);
 	p->map_info.north_tex_path = NULL;
 	free(p->map_info.south_tex_path);

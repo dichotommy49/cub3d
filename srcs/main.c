@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:21:25 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/21 13:09:27 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/28 13:41:05 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,43 @@
 
 void			exit_cub3d(t_cub3d *p, int error, char *msg)
 {
-	if (p->mlx_ptr && p->win_ptr)
-	{
-		mlx_clear_window(p->mlx_ptr, p->win_ptr);
-		mlx_destroy_window(p->mlx_ptr, p->win_ptr);
-	}
-	if (p->map_info.cub_content)
-		free(p->map_info.cub_content);
-	if (p->map_info.north_tex_path)
-		free(p->map_info.north_tex_path);
-	if (p->map_info.south_tex_path)
-		free(p->map_info.south_tex_path);
-	if (p->map_info.east_tex_path)
-		free(p->map_info.east_tex_path);
-	if (p->map_info.west_tex_path)
-		free(p->map_info.west_tex_path);
-	if (p->map_info.sprite_path)
-		free(p->map_info.sprite_path);
-	if (p->zbuffer)
-		free(p->zbuffer);
-	if (p->sprites)
-		free(p->sprites);
-	//free level map
-	if (p->map_info.level_map)
-	{
-		int	x = 0;
-		while (x < p->map_info.map_w)
-		{
-			if (p->map_info.level_map[x])
-				free(p->map_info.level_map[x]);
-			x++;
-		}
-		free(p->map_info.level_map);
-	}
 	if (p)
+	{
+		if (p->mlx_ptr && p->win_ptr)
+		{
+			mlx_clear_window(p->mlx_ptr, p->win_ptr);
+			mlx_destroy_window(p->mlx_ptr, p->win_ptr);
+		}
+		if (p->map_info.cub_content)
+			free(p->map_info.cub_content);
+		if (p->map_info.north_tex_path)
+			free(p->map_info.north_tex_path);
+		if (p->map_info.south_tex_path)
+			free(p->map_info.south_tex_path);
+		if (p->map_info.east_tex_path)
+			free(p->map_info.east_tex_path);
+		if (p->map_info.west_tex_path)
+			free(p->map_info.west_tex_path);
+		if (p->map_info.sprite_path)
+			free(p->map_info.sprite_path);
+		if (p->zbuffer)
+			free(p->zbuffer);
+		if (p->sprites)
+			free(p->sprites);
+		//free level map
+		if (p->map_info.level_map)
+		{
+			int	x = 0;
+			while (x < p->map_info.map_w)
+			{
+				if (p->map_info.level_map[x])
+					free(p->map_info.level_map[x]);
+				x++;
+			}
+			free(p->map_info.level_map);
+		}
 		free(p);
+	}
 	if (error)
 	{
 		ft_putstr_fd("Error\n", STDERR_FILENO);

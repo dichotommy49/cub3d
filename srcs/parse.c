@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/21 13:03:46 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/28 13:38:25 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,14 @@ void	get_resolution(char **cub, t_cub3d *p)
 		exit_cub3d(p, 1, "Resolution cannot be negative\n");
 }
 
-void	get_texture_path(char **cub, t_map *map_info, char c)
+void	get_texture_path(t_cub3d *p, char **cub, char c)
 {
 	int		i;
 	char	**target;
+	t_map	*map_info = &p->map_info;
 
+	if ((c == 'N' && map_info->north_tex_path) || (c == 'W' && map_info->west_tex_path) || (c == 'E' && map_info->east_tex_path) || (c == 'S' && map_info->south_tex_path))
+		exit_cub3d(p, 1, "Repeat texture paths present in .cub file\n");
 	i = 0;
 	while(ft_isalpha(**cub))
 		*cub = *cub + 1;
@@ -45,21 +48,21 @@ void	get_texture_path(char **cub, t_map *map_info, char c)
 		target = &map_info->south_tex_path;
 	while ((*cub)[i] != ' ' && (*cub)[i] != '\n')
 		i++;
-	if (!(*target = malloc(i + 1)))
-		return ;
-	i = 0;
+	if (i == 0)
+		exit_cub3d(p, 1, "Texture path cannot be empty\n");
+	if (!(*target = ft_substr(*cub, 0, i)))
+		exit_cub3d(p, 1, "Malloc for texture path failed\n");
 	while (**cub != ' ' && **cub != '\n')
-	{
-		(*target)[i++] = **cub;
 		*cub = *cub + 1;
-	}
-	(*target)[i] = 0;
 }
 
-void	get_sprite_path(char **cub, t_map *map_info)
+void	get_sprite_path(t_cub3d *p, char **cub)
 {
 	int		i;
+	t_map	*map_info = &p->map_info;
 
+	if (map_info->sprite_path)
+		exit_cub3d(p, 1, "Multiple sprite paths present in .cub file\n");
 	i = 0;
 	*cub = *cub + 1;
 	while (**cub == ' ')
@@ -67,7 +70,7 @@ void	get_sprite_path(char **cub, t_map *map_info)
 	while ((*cub)[i] != ' ' && (*cub)[i] != '\n')
 		i++;
 	if (!(map_info->sprite_path = malloc(i + 1)))
-		return ;
+		exit_cub3d(p, 1, "Malloc for sprite path failed\n");
 	i = 0;
 	while (**cub != ' ' && **cub != '\n')
 	{
@@ -216,9 +219,9 @@ char	*process_non_map_info(t_cub3d *p)
 		if (*cub == 'R')
 			get_resolution(&cub, p);
 		if (*cub == 'N' || *cub == 'W' || *cub == 'E' || (*cub == 'S' && *(cub + 1) == 'O'))
-			get_texture_path(&cub, &p->map_info, *cub);
+			get_texture_path(p, &cub, *cub);
 		if (*cub == 'S')
-			get_sprite_path(&cub, &p->map_info);
+			get_sprite_path(p, &cub);
 		if (*cub == 'F')
 			get_color(&cub, &p->map_info, 0);
 		if (*cub == 'C')
@@ -353,7 +356,11 @@ void	check_map_enclosed(t_cub3d *p)
 void	parse_cub(t_cub3d *p, char *cub_path)
 {
 	char	*cub;
+	char	*ptr;
 
+	//	add code to check that cub_path indeed ends in .cub
+	if (!(ptr = ft_strnstr(cub_path, ".cub", ft_strlen(cub_path))) || ft_strncmp(ptr, ".cub", 5) != 0)
+		exit_cub3d(p, 1, "First argument must end in .cub\n");
 	if (read_cub(&p->map_info, cub_path) < 0)
 		exit_cub3d(p, 1, "Problem reading .cub file\n");
 	if (*p->map_info.cub_content == 0)
