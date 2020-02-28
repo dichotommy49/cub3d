@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/21 12:59:40 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/28 14:14:55 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ typedef struct	s_map
 	int				**level_map;
 	int				tex_w;
 	int				tex_h;
+	short			floor_color_got;
+	short			ceiling_color_got;
 }				t_map;
 
 typedef struct	s_cub3d

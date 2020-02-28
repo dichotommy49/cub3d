@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/28 13:38:25 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/28 14:39:15 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	get_texture_path(t_cub3d *p, char **cub, char c)
 {
 	int		i;
 	char	**target;
+	char	*ptr;
 	t_map	*map_info = &p->map_info;
 
 	if ((c == 'N' && map_info->north_tex_path) || (c == 'W' && map_info->west_tex_path) || (c == 'E' && map_info->east_tex_path) || (c == 'S' && map_info->south_tex_path))
@@ -50,6 +51,8 @@ void	get_texture_path(t_cub3d *p, char **cub, char c)
 		i++;
 	if (i == 0)
 		exit_cub3d(p, 1, "Texture path cannot be empty\n");
+	if (!(ptr = ft_strnstr(*cub, ".xpm", i)) || *(ptr + 4) != '\n')
+		exit_cub3d(p, 1, "Texture paths must end in .xpm\n");
 	if (!(*target = ft_substr(*cub, 0, i)))
 		exit_cub3d(p, 1, "Malloc for texture path failed\n");
 	while (**cub != ' ' && **cub != '\n')
@@ -80,25 +83,34 @@ void	get_sprite_path(t_cub3d *p, char **cub)
 	map_info->sprite_path[i] = 0;
 }
 
-void	get_color(char **cub, t_map *map_info, int ceiling)
+void	get_color(t_cub3d *p, char **cub, int ceiling)
 {
 	int		r;
 	int		g;
 	int		b;
 	unsigned int	color;
+	t_map	*map_info = &p->map_info;
 
 	*cub = *cub + 1;
-	r = cub3d_atoui(cub);
+	r = cub3d_atoi(cub);
 	*cub = *cub + 1;
-	g = cub3d_atoui(cub);
+	g = cub3d_atoi(cub);
 	*cub = *cub + 1;
-	b = cub3d_atoui(cub);
+	b = cub3d_atoi(cub);
 	*cub = *cub + 1;
+	if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0)
+		exit_cub3d(p, 1, "Color values must be between 0 and 255\n");
 	color = (r << 16 | g << 8 | b);
 	if (!ceiling)
+	{
 		map_info->floor_color = color;
+		p->map_info.floor_color_got = 1;
+	}
 	else
+	{
 		map_info->ceiling_color = color;
+		p->map_info.ceiling_color_got = 1;
+	}
 }
 
 int		get_map_width(char *cub)
@@ -209,6 +221,19 @@ void	set_player_starting_direction(t_cub3d *p, char c, int x, int y)
 	}
 }
 
+int		check_line_only_spaces(char *cub)
+{
+	if (*cub == '\n')
+		return (0);
+	while (*cub != '\n')
+	{
+		if (*cub != ' ')
+			return (0);
+		cub++;
+	}
+	return (1);
+}
+
 char	*process_non_map_info(t_cub3d *p)
 {
 	char	*cub;
@@ -223,13 +248,20 @@ char	*process_non_map_info(t_cub3d *p)
 		if (*cub == 'S')
 			get_sprite_path(p, &cub);
 		if (*cub == 'F')
-			get_color(&cub, &p->map_info, 0);
+			get_color(p, &cub, 0);
 		if (*cub == 'C')
-			get_color(&cub, &p->map_info, 1);
-		if (ft_isdigit(*cub) && *(cub - 1) == '\n')
+			get_color(p, &cub, 1);
+		if (ft_isdigit(*cub) && (*cub - 1 == '\n' || (p->res_w && p->res_h && p->map_info.north_tex_path && p->map_info.south_tex_path && p->map_info.west_tex_path && p->map_info.east_tex_path && p->map_info.sprite_path && p->map_info.floor_color_got && p->map_info.ceiling_color_got)))
 			break ;
 		while (*cub == ' ' || *cub == '\n')
+		{
+			if (*cub == '\n')
+			{
+				if (check_line_only_spaces(cub + 1))
+					exit_cub3d(p, 1, ".cub file contains line with only spaces\n");
+			}
 			cub++;
+		}
 	}
 	return (cub);
 }
@@ -308,7 +340,7 @@ void	initialize_sprites(t_cub3d *p)
 	int	x;
 	int	y;
 	int	i;
-	
+
 	if (!(p->sprites = ft_calloc(sizeof(t_sprite), p->num_sprites)))
 		exit_cub3d(p, 1, "Malloc for sprites failed\n");
 	x = 0;
@@ -358,7 +390,6 @@ void	parse_cub(t_cub3d *p, char *cub_path)
 	char	*cub;
 	char	*ptr;
 
-	//	add code to check that cub_path indeed ends in .cub
 	if (!(ptr = ft_strnstr(cub_path, ".cub", ft_strlen(cub_path))) || ft_strncmp(ptr, ".cub", 5) != 0)
 		exit_cub3d(p, 1, "First argument must end in .cub\n");
 	if (read_cub(&p->map_info, cub_path) < 0)
