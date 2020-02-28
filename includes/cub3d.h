@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:59:17 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/28 14:14:55 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/28 15:20:44 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # define TEX_W 64
 # define TEX_H 64
+# define VALID_CHARS "NSEW \n012"
 
 typedef struct	s_sprite
 {

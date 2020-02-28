@@ -6,7 +6,7 @@
 /*   By: tmelvin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 15:33:56 by tmelvin           #+#    #+#             */
-/*   Updated: 2020/02/28 14:39:15 by tmelvin          ###   ########.fr       */
+/*   Updated: 2020/02/28 15:01:40 by tmelvin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	get_texture_path(t_cub3d *p, char **cub, char c)
 {
 	int		i;
 	char	**target;
-	char	*ptr;
+//	char	*ptr;
 	t_map	*map_info = &p->map_info;
 
 	if ((c == 'N' && map_info->north_tex_path) || (c == 'W' && map_info->west_tex_path) || (c == 'E' && map_info->east_tex_path) || (c == 'S' && map_info->south_tex_path))
@@ -51,8 +51,8 @@ void	get_texture_path(t_cub3d *p, char **cub, char c)
 		i++;
 	if (i == 0)
 		exit_cub3d(p, 1, "Texture path cannot be empty\n");
-	if (!(ptr = ft_strnstr(*cub, ".xpm", i)) || *(ptr + 4) != '\n')
-		exit_cub3d(p, 1, "Texture paths must end in .xpm\n");
+//	if (!(ptr = ft_strnstr(*cub, ".xpm", i)) || *(ptr + 4) != '\n')
+//		exit_cub3d(p, 1, "Texture paths must end in .xpm\n");
 	if (!(*target = ft_substr(*cub, 0, i)))
 		exit_cub3d(p, 1, "Malloc for texture path failed\n");
 	while (**cub != ' ' && **cub != '\n')
@@ -276,7 +276,7 @@ void	check_map_errors(t_cub3d *p, char *cub)
 		if (*cub == '\n')
 			if (*(cub + 1) == '\n')
 				exit_cub3d(p, 1, "Map contains an empty line\n");
-		if (*cub != 'N' && *cub != 'S' && *cub != 'E' && *cub != 'W' && *cub != ' ' && *cub != '\n' && *cub != '2' && *cub != '1' && *cub != '0')
+		if (!(ft_strchr(VALID_CHARS, *cub)))
 			exit_cub3d(p, 1, "Map contains unrecognized character\n");
 		cub++;
 	}
